@@ -55,7 +55,7 @@ public class EmailSendingService {
         mimeMessageHelper.setFrom(setFrom);
         mimeMessageHelper.setText(setContext(authNum), true); // true: HTML 포맷 사용
 
-        String imageResourceName = "plot_logo.png"; // 이미지 파일명
+        String imageResourceName = "tire.png"; // 이미지 파일명
         ClassPathResource imageResource = new ClassPathResource("templates/" + imageResourceName);
         mimeMessageHelper.addInline(imageResourceName, imageResource);
 
