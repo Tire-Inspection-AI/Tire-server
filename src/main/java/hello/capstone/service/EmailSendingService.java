@@ -25,10 +25,10 @@ public class EmailSendingService {
 
     private final EmailTmpRepository emailTmpRepository;
 
-    private String authNum;//랜덤 인증 코드
+
 
     //렌덤 인증 코드 생성
-    public void createCode(){
+    public String createCode(){
         Random random = new Random();
         StringBuffer key = new StringBuffer();
 
@@ -36,13 +36,13 @@ public class EmailSendingService {
             key.append(random.nextInt(9));
 
         }
-        authNum=key.toString();
+        return key.toString();
     }
 
 
 
-    public MimeMessage createEmailForm(String email) throws MessagingException {
-        createCode();
+    public String SendEmail(String email) throws MessagingException {
+        String authNum = createCode();
         String setFrom = "gntjd135@gmail.com";
         String toEmail = email; //받는 사람
         String title = "Tire Inspection 회원가입 인증 번호 " + "[" + authNum + "]";
@@ -59,21 +59,11 @@ public class EmailSendingService {
         ClassPathResource imageResource = new ClassPathResource("templates/" + imageResourceName);
         mimeMessageHelper.addInline(imageResourceName, imageResource);
 
-        return message;
-    }
-
-    //실제 이메일 전송
-    public String sendEmail(String toEmail) throws MessagingException {
-
-        //메일 전송에 필요한 정보 설정.
-        MimeMessage emailForm = createEmailForm(toEmail);
-        //실제 이메일 전송
-        emailSender.send(emailForm);
+        //메일 전송에 필요한 정보 설정 후 , 실제 이메일 전송.
+        emailSender.send(message);
 
         return authNum;//인증 코드 반환.
     }
-
-
 
 
     //타임 리프를 이용한 context 설정

@@ -40,7 +40,7 @@ public class EmailService {
             emailTmpRepository.delete(findByUserEmail.get());
         }//이미 바로 전에 인증번호 전송했으면, 전에 꺼 tuple 삭제.
 
-        String authCode = emailSendingService.sendEmail(emailRequestDto.getEmail());//인증번호 전송과, emailTmp 저장을 transaction으로 묶음.
+        String authCode = emailSendingService.SendEmail(emailRequestDto.getEmail());//인증번호 전송과, emailTmp 저장을 transaction으로 묶음.
 
         //db에 사용자가 이미 먼저 보낸 인증 코드가 있으면, 그 레코드 삭제하고, 새로 생성.
 
