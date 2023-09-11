@@ -8,7 +8,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import hello.capstone.domain.Message;
 import hello.capstone.domain.RefreshToken;
 import hello.capstone.domain.User;
-import hello.capstone.dto.response.UserResponseDto;
+import hello.capstone.dto.response.user.UserResponseDto;
 import hello.capstone.repository.RefreshTokenRepository;
 import hello.capstone.util.JwtUtil;
 import org.springframework.http.HttpHeaders;

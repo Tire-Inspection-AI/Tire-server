@@ -2,7 +2,7 @@ package hello.capstone.controller;
 
 
 import hello.capstone.domain.Message;
-import hello.capstone.dto.request.UserReqDto;
+import hello.capstone.dto.request.user.UserReqDto;
 import hello.capstone.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

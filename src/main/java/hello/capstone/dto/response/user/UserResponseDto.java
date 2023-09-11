@@ -1,4 +1,4 @@
-package hello.capstone.dto.response;
+package hello.capstone.dto.response.user;
 
 import hello.capstone.domain.User;
 import lombok.AllArgsConstructor;

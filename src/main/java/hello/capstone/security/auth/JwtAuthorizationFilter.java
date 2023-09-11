@@ -63,7 +63,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         Cookie cookie = null;
         try {
             cookie = Arrays.stream(request.getCookies())
-                    .filter(r -> r.getName().equals("plot_token"))
+                    .filter(r -> r.getName().equals("tire_token"))
                     .findAny()
                     .orElse(null);
         } catch (NullPointerException e) {
@@ -127,7 +127,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                 String newAccessToken = JwtUtil.createAccessToken(savedUser, refreshTokenId);
 
                 if(refreshTokenClaims != null) {
-                    ResponseCookie cookies = ResponseCookie.from("plot_token", newAccessToken)
+                    ResponseCookie cookies = ResponseCookie.from("tire_token", newAccessToken)
                             .httpOnly(true)
                             .sameSite("Strict")
                             .domain("localhost")

@@ -3,8 +3,8 @@ package hello.capstone.service;
 
 import hello.capstone.domain.RefreshToken;
 import hello.capstone.domain.User;
-import hello.capstone.dto.request.UserReqDto;
-import hello.capstone.dto.response.UserResponseDto;
+import hello.capstone.dto.request.user.UserReqDto;
+import hello.capstone.dto.response.user.UserResponseDto;
 import hello.capstone.exception.user.PasswordFormatException;
 import hello.capstone.exception.user.SecurityContextUserNotFoundException;
 import hello.capstone.exception.user.UserNotFoundException;

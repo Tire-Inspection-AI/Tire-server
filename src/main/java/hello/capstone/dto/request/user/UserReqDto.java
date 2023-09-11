@@ -1,4 +1,4 @@
-package hello.capstone.dto.request;
+package hello.capstone.dto.request.user;
 
 
 import hello.capstone.domain.User;
