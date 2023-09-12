@@ -21,6 +21,8 @@ public class OauthTokenProvider {
 
         if (providerName.equals("naver")) {
             return getNaverToken(code, provider);
+        } else if (providerName.equals("kakao")) {
+            return getKakaoToken(code, provider);
         }
         else {
             throw new Exception("허용되지 않습니다.");
@@ -37,6 +39,29 @@ public class OauthTokenProvider {
         formData.add("client_secret", provider.getClientSecret());
         formData.add("code", code);
         formData.add("state", "1234");
+
+        return WebClient.create()
+                .post()
+                .uri(provider.getProviderDetails().getTokenUri())
+                .headers(header -> {
+                    header.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+                    header.setAcceptCharset(Collections.singletonList(StandardCharsets.UTF_8));
+                })
+                .bodyValue(formData)
+                .retrieve()
+                .bodyToMono(OauthTokenResponseDto.class)
+                .block();
+    }
+
+    public static OauthTokenResponseDto getKakaoToken(String code, ClientRegistration provider) {
+
+        MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
+
+        formData.add("grant_type", "authorization_code");
+        formData.add("client_id", provider.getClientId());
+        formData.add("client_secret", provider.getClientSecret());
+        formData.add("redirect_uri", provider.getRedirectUri());
+        formData.add("code", code);
 
         return WebClient.create()
                 .post()
