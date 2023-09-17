@@ -129,8 +129,8 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                 if(refreshTokenClaims != null) {
                     ResponseCookie cookies = ResponseCookie.from("tire_token", newAccessToken)
                             .httpOnly(true)
-                            .sameSite("Strict")
-                            .domain("localhost")
+                            .sameSite("None")
+                            .secure(true)
                             .path("/")
                             .maxAge(3 * 24 * 60 * 60)     // 3일
                             .build();

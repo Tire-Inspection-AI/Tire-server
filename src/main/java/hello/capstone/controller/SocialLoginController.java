@@ -58,8 +58,8 @@ public class SocialLoginController {
 
         ResponseCookie cookie = ResponseCookie.from("tire_token", accessToken)
                 .httpOnly(true)
-                .sameSite("Strict")
-                .domain("localhost")
+                .sameSite("None")
+                .secure(true)
                 .path("/")
                 .maxAge(60 * 60 * 3) // 3시간
                 .build();

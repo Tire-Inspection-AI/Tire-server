@@ -99,8 +99,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         //4. Cookie에 Access Token (access_token) 주입.
         ResponseCookie cookies=ResponseCookie.from("tire_token",accessToken)
                 .httpOnly(true)
-                .sameSite("Strict")
-                .domain("localhost")
+                .sameSite("None")
+                .secure(true)
                 .path("/")
                 .maxAge(3*24*60*60) //3일
                 .build();
