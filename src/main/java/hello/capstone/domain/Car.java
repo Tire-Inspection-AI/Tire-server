@@ -36,9 +36,21 @@ public class Car {
     @Column(name = "fourth_digit_license_plate", nullable = false)
     private Integer fourth_digit_license_plate;
 
-    @Comment("마지막 타이어 교체 시기")
-    @Column(name = "recent_change_date", nullable = false)
-    private LocalDate recentChangeDate;
+    @Comment("왼쪽 앞 타이어 마지막 타이어 교체 시기")
+    @Column(name = "recent_change_date_lf", nullable = false)
+    private LocalDate LeftFrontRecentChangeDate;
+
+    @Comment("왼쪽 뒷 타이어 마지막 타이어 교체 시기")
+    @Column(name = "recent_change_date_lb", nullable = false)
+    private LocalDate LeftBackRecentChangeDate;
+
+    @Comment("오른쪽 앞 타이어 마지막 타이어 교체 시기")
+    @Column(name = "recent_change_date_rf", nullable = false)
+    private LocalDate RightFrontRecentChangeDate;
+
+    @Comment("왼쪽 뒷 타이어 마지막 타이어 교체 시기")
+    @Column(name = "recent_change_date_rb", nullable = false)
+    private LocalDate RightBackRecentChangeDate;
 
 
     /**

@@ -22,7 +22,13 @@ public class CarResponseWithTireStatus {
 
     private Integer fourth_digit_license_plate;//차량 번호 뒷 4자리.
 
-    private LocalDate recentChangeDate;//월 일
+    private LocalDate LeftFrontTireRecentChangeDate;//년 월 입력
+
+    private LocalDate LeftBackTireRecentChangeDate;//년 월 입력
+
+    private LocalDate RightFrontTireRecentChangeDate;//년 월 입력
+
+    private LocalDate RightBackTireRecentChangeDate;//년 월 입력
 
     private LocalDateTime created_at;
 
@@ -41,7 +47,10 @@ public class CarResponseWithTireStatus {
                 .type(car.getType().name())
                 .model(car.getModel())
                 .fourth_digit_license_plate(car.getFourth_digit_license_plate())
-                .recentChangeDate(car.getRecentChangeDate())
+                .LeftFrontTireRecentChangeDate(car.getLeftFrontRecentChangeDate())
+                .LeftBackTireRecentChangeDate(car.getLeftBackRecentChangeDate())
+                .RightFrontTireRecentChangeDate(car.getRightFrontRecentChangeDate())
+                .RightBackTireRecentChangeDate(car.getRightBackRecentChangeDate())
                 .created_at(car.getCreatedAt())
                 .leftFrontTireStatus(car.getLeftFrontTire().name())
                 .leftBackTireStatus(car.getLeftBackTire().name())
