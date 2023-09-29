@@ -7,6 +7,7 @@ import org.hibernate.annotations.Comment;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -39,6 +40,14 @@ public class Car {
     @Column(name = "recent_change_date", nullable = false)
     private LocalDate recentChangeDate;
 
+
+    /**
+     * 만약에 타이어에 대한 정보가 여러개 필요하면 car-->tire로 @manytoone으로 매핑해서 관리하자.
+     */
+
+    @Comment("차량 등록된 날짜")
+    @Column(name = "created_at", nullable = false, columnDefinition = "datetime")
+    private LocalDateTime createdAt;
     @Comment("왼쪽 앞 바퀴")
     @Column(name = "left_front_tire", nullable = false)
     @Enumerated
