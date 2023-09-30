@@ -27,24 +27,15 @@ public class CarInformationApiController {
     private final CarApiService carApiService;
 
     @PostMapping("")
-    public void findCarInfo(HttpServletResponse response, @RequestBody CarApiReqDto carApiReqDto) throws IOException {
+    public void findCarInfo(HttpServletResponse response, @RequestBody CarApiReqDto carApiReqDto) throws Exception {
 
         ObjectMapper om = new ObjectMapper();
         om.registerModule(new JavaTimeModule());
         om.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         response.setContentType(MediaType.APPLICATION_JSON.toString());
 
-        CarInfo carInfo = null;
-        try {
-            carInfo = carApiService.getCarInfo(carApiReqDto);
-        } catch (Exception e) {
-            Message message = Message.builder()
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .message(e.getMessage())
-                    .build();
-            om.writeValue(response.getOutputStream(), message);
-            return;
-        }
+        CarInfo carInfo = carApiService.getCarInfo(carApiReqDto);
+
         Message message = Message.builder()
                 .status(HttpStatus.OK)
                 .data(carInfo)

@@ -51,8 +51,6 @@ public class CarInfoProvider {
     public CarInfo makeCarInfo(Map<String, Object> attributes) {
 
         if (attributes != null) {
-            log.info("attrbutes={}",attributes.get("errCode"));
-            log.info("attrbutes={}",attributes.get("errMsg"));
             Map<String, Object> data = (Map<String, Object>) attributes.get("data");
             if (data != null) {
                 return CarInfo.builder()
