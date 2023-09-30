@@ -24,12 +24,12 @@ public class Car {
     private Long id;
 
     @Comment("차량 종류 ex(경형, 소형, 중형, 대형, SUV")
-    @Column(name = "type", nullable = false)
-    @Enumerated
+    @Column(name = "type", nullable = false,columnDefinition = "varchar(36)")
+    @Enumerated(EnumType.STRING)
     private CarTypeEnum type;
 
     @Comment("차량 모델 ex(그랜져)")
-    @Column(name = "model", nullable = true)
+    @Column(name = "model", nullable = true,columnDefinition = "varchar(255)")
     private String model;
 
     @Comment("차량 번호 4자리 (숫자 여야 함.)")
@@ -61,23 +61,23 @@ public class Car {
     @Column(name = "created_at", nullable = false, columnDefinition = "datetime")
     private LocalDateTime createdAt;
     @Comment("왼쪽 앞 바퀴")
-    @Column(name = "left_front_tire", nullable = false)
-    @Enumerated
+    @Column(name = "left_front_tire", nullable = false, columnDefinition = "varchar(36)")
+    @Enumerated(EnumType.STRING)
     private TireStatusEnum LeftFrontTire;
 
     @Comment("왼쪽 뒷 바퀴")
-    @Column(name = "left_back_tire", nullable = false)
-    @Enumerated
+    @Column(name = "left_back_tire", nullable = false, columnDefinition = "varchar(36)")
+    @Enumerated(EnumType.STRING)
     private TireStatusEnum LeftBackTire;
 
     @Comment("오른쪽 앞 바퀴")
-    @Column(name = "right_front_tire", nullable = false)
-    @Enumerated
+    @Column(name = "right_front_tire", nullable = false, columnDefinition = "varchar(36)")
+    @Enumerated(EnumType.STRING)
     private TireStatusEnum RightFrontTire;
 
     @Comment("오른쪽 뒤 바퀴")
-    @Column(name = "right_back_tire", nullable = false)
-    @Enumerated
+    @Column(name = "right_back_tire", nullable = false, columnDefinition = "varchar(36)")
+    @Enumerated(EnumType.STRING)
     private TireStatusEnum RightBackTire;
 
     @ManyToOne(fetch = FetchType.LAZY)
