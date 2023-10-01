@@ -1,6 +1,9 @@
 package hello.capstone.exception;
 
 import hello.capstone.domain.Message;
+import hello.capstone.exception.car.NotFoundException;
+import hello.capstone.exception.car.OwnerMismatchException;
+import hello.capstone.exception.car.SearchFailedException;
 import hello.capstone.exception.email.EmailCodeExpiredException;
 import hello.capstone.exception.email.EmailCodeMismatchException;
 import hello.capstone.exception.email.EmailCodeSendingFailureException;
@@ -60,23 +63,42 @@ public class CustomExceptionHandler {
 
     @ExceptionHandler(EmailCodeSendingFailureException.class)//email 관련 오류 -200~300
     public ResponseEntity<?> handleException(EmailCodeSendingFailureException e) {
-        Message message = new Message(e.getMessage(), -200, HttpStatus.BAD_REQUEST);
+        Message message = new Message(e.getMessage(), -200, HttpStatus.OK);
         return new ResponseEntity<>(message, message.getStatus());
     }
 
 
     @ExceptionHandler(EmailCodeExpiredException.class)//email 관련 오류 -200~300
     public ResponseEntity<?> handleException(EmailCodeExpiredException e) {
-        Message message = new Message(e.getMessage(), -201, HttpStatus.BAD_REQUEST);
+        Message message = new Message(e.getMessage(), -201, HttpStatus.OK);
         return new ResponseEntity<>(message, message.getStatus());
     }
 
     @ExceptionHandler(EmailCodeMismatchException.class)//email 관련 오류 -200~300
     public ResponseEntity<?> handleException(EmailCodeMismatchException e) {
-        Message message = new Message(e.getMessage(), -202, HttpStatus.BAD_REQUEST);
+        Message message = new Message(e.getMessage(), -202, HttpStatus.OK);
         return new ResponseEntity<>(message, message.getStatus());
     }
 
 
+    //Car 예외처리
+
+    @ExceptionHandler(OwnerMismatchException.class)
+    public ResponseEntity<?> handleException(OwnerMismatchException e) {
+        Message message = new Message(e.getMessage(), -250, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(message, message.getStatus());
+    }
+
+    @ExceptionHandler(NotFoundException.class)//email 관련 오류 -200~300
+    public ResponseEntity<?> handleException(NotFoundException e) {
+        Message message = new Message(e.getMessage(), -251, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(message, message.getStatus());
+    }
+
+    @ExceptionHandler(SearchFailedException.class)//email 관련 오류 -200~300
+    public ResponseEntity<?> handleException(SearchFailedException e) {
+        Message message = new Message(e.getMessage(), -252, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(message, message.getStatus());
+    }
 
 }

@@ -35,7 +35,6 @@ public class SocialLoginController {
         om.registerModule(new JavaTimeModule());
         om.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         response.setContentType(MediaType.APPLICATION_JSON.toString());
-        response.setContentType(MediaType.APPLICATION_JSON.toString());
 
         LoginResponseDto loginResponse = null;
         try {

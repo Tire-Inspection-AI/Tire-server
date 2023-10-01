@@ -1,14 +1,18 @@
 package hello.capstone.service;
 
 
+import hello.capstone.car_api.CarInfo;
 import hello.capstone.domain.Car;
+import hello.capstone.domain.Tire;
 import hello.capstone.domain.User;
-import hello.capstone.dto.request.car.NewCarReqDto;
+import hello.capstone.dto.request.car.CarReqDto;
 import hello.capstone.dto.response.car.CarResponseDto;
 import hello.capstone.exception.car.CarSavedFailException;
 import hello.capstone.repository.CarRepository;
+import hello.capstone.repository.TireRepository;
 import hello.capstone.repository.UserRepository;
 import hello.capstone.util.SecurityContextHolderUtil;
+import hello.capstone.util.TirePositionEnum;
 import hello.capstone.util.TireStatusEnum;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,30 +30,72 @@ public class CarService {
 
     private final UserRepository userRepository;
 
+    private final TireRepository tireRepository;
+
     @Transactional
-    public CarResponseDto savedCar(NewCarReqDto newCarReqDto){
+    public CarResponseDto savedCar(CarInfo carInfo, CarReqDto carReqDto){
 
         try{
             Long userId = SecurityContextHolderUtil.getUserId();
             User user = userRepository.findById(userId).get();
 
-            Car newCar= Car.builder()
-                    .type(newCarReqDto.getType())
-                    .model(newCarReqDto.getModel())
-                    .fourth_digit_license_plate(newCarReqDto.getFourth_digit_license_plate())
-                    .LeftFrontRecentChangeDate(newCarReqDto.getLeftFrontTireRecentChangeDate())
-                    .LeftBackRecentChangeDate(newCarReqDto.getLeftBackTireRecentChangeDate())
-                    .RightFrontRecentChangeDate(newCarReqDto.getRightFrontTireRecentChangeDate())
-                    .RightBackRecentChangeDate(newCarReqDto.getRightBackTireRecentChangeDate())
+            /**
+             * 차량 1대와, 그 차량 번호로 타이어 4개 저장.
+             */
+            Car newCar = Car.builder()
+                    .name(carInfo.getCarName())
+                    .vender(carInfo.getCarVender())
+                    .registrationNumber(carInfo.getRegistrationNumber())
+                    .year(Integer.parseInt(carInfo.getCarYear()))
+                    .drive(carInfo.getDrive())
+                    .seats(Integer.parseInt(carInfo.getSeats()))
+                    .fuel(carInfo.getFuel())
+                    .cc(Integer.parseInt(carInfo.getCc()))
+                    .fuelEconomy(Double.valueOf(carInfo.getFuelEconomy()))
+                    .frontTire(carInfo.getFrontTire())
+                    .rearTire(carInfo.getRearTire())
                     .createdAt(LocalDateTime.now())
-                    .LeftFrontTire(TireStatusEnum.GoodCondition)
-                    .LeftBackTire(TireStatusEnum.GoodCondition)
-                    .RightFrontTire(TireStatusEnum.GoodCondition)
-                    .RightBackTire(TireStatusEnum.GoodCondition)
                     .user(user)
                     .build();
 
             Car savedCar = carRepository.save(newCar);
+
+            Tire Front_Left = Tire.builder()
+                    .recentChangeDate(carReqDto.getFrontLeftTireRecentChangeDate())
+                    .tirePosition(TirePositionEnum.Front_Left)
+                    .tireStatus(TireStatusEnum.Good_Condition)
+                    .car(savedCar)
+                    .build();
+
+            Tire savedF_L = tireRepository.save(Front_Left);
+
+            Tire Front_Right = Tire.builder()
+                    .recentChangeDate(carReqDto.getFrontRightTireRecentChangeDate())
+                    .tirePosition(TirePositionEnum.Front_Right)
+                    .tireStatus(TireStatusEnum.Good_Condition)
+                    .car(savedCar)
+                    .build();
+
+            Tire savedF_R = tireRepository.save(Front_Right);
+
+            Tire Rear_Left = Tire.builder()
+                    .recentChangeDate(carReqDto.getRearLeftTireRecentChangeDate())
+                    .tirePosition(TirePositionEnum.Rear_Left)
+                    .tireStatus(TireStatusEnum.Good_Condition)
+                    .car(savedCar)
+                    .build();
+
+            Tire savedR_L = tireRepository.save(Rear_Left);
+
+            Tire Rear_Right = Tire.builder()
+                    .recentChangeDate(carReqDto.getRearRightTireRecentChangeDate())
+                    .tirePosition(TirePositionEnum.Rear_Right)
+                    .tireStatus(TireStatusEnum.Good_Condition)
+                    .car(savedCar)
+                    .build();
+
+            Tire savedR_R = tireRepository.save(Rear_Right);
+
             return CarResponseDto.of(savedCar);
         }catch(Exception e){
             throw new CarSavedFailException("차량 정보 저장에 실패하였습니다.");

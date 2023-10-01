@@ -1,12 +1,9 @@
 package hello.capstone.domain;
 
-import hello.capstone.util.CarTypeEnum;
-import hello.capstone.util.TireStatusEnum;
 import lombok.*;
 import org.hibernate.annotations.Comment;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -23,62 +20,53 @@ public class Car {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Comment("차량 종류 ex(경형, 소형, 중형, 대형, SUV")
-    @Column(name = "type", nullable = false,columnDefinition = "varchar(36)")
-    @Enumerated(EnumType.STRING)
-    private CarTypeEnum type;
+    @Comment("차량 명")
+    @Column(name = "name", nullable = false,columnDefinition = "varchar(255)")
+    private String name;
 
-    @Comment("차량 모델 ex(그랜져)")
-    @Column(name = "model", nullable = true,columnDefinition = "varchar(255)")
-    private String model;
+    @Comment("제조사")
+    @Column(name = "vender", nullable = false,columnDefinition = "varchar(255)")
+    private String vender;
 
-    @Comment("차량 번호 4자리 (숫자 여야 함.)")
-    @Column(name = "fourth_digit_license_plate", nullable = false)
-    private Integer fourth_digit_license_plate;
+    @Comment("차량 번호")
+    @Column(name = "registration_number", nullable = false,columnDefinition = "varchar(255)")
+    private String registrationNumber;
 
-    @Comment("왼쪽 앞 타이어 마지막 타이어 교체 시기")
-    @Column(name = "recent_change_date_lf", nullable = false)
-    private LocalDate LeftFrontRecentChangeDate;
+    @Comment("차대 번호")
+    @Column(name = "year", nullable = false,columnDefinition = "int")
+    private Integer year;
 
-    @Comment("왼쪽 뒷 타이어 마지막 타이어 교체 시기")
-    @Column(name = "recent_change_date_lb", nullable = false)
-    private LocalDate LeftBackRecentChangeDate;
+    @Comment("구동 방식")
+    @Column(name = "drive", nullable = false,columnDefinition = "varchar(36)")
+    private String drive;
 
-    @Comment("오른쪽 앞 타이어 마지막 타이어 교체 시기")
-    @Column(name = "recent_change_date_rf", nullable = false)
-    private LocalDate RightFrontRecentChangeDate;
+    @Comment("좌석 수")
+    @Column(name = "seats", nullable = false,columnDefinition = "int")
+    private Integer seats;
 
-    @Comment("왼쪽 뒷 타이어 마지막 타이어 교체 시기")
-    @Column(name = "recent_change_date_rb", nullable = false)
-    private LocalDate RightBackRecentChangeDate;
+    @Comment("연료")
+    @Column(name = "fuel", nullable = false,columnDefinition = "varchar(36)")
+    private String fuel;
 
+    @Comment("배기량")
+    @Column(name = "cc", nullable = false,columnDefinition = "int")
+    private Integer cc;
 
-    /**
-     * 만약에 타이어에 대한 정보가 여러개 필요하면 car-->tire로 @manytoone으로 매핑해서 관리하자.
-     */
+    @Comment("연비")
+    @Column(name = "fuel_economy", nullable = false,columnDefinition = "double")
+    private double fuelEconomy;
+
+    @Comment("앞 타이어 정보")
+    @Column(name = "front_tire", nullable = false,columnDefinition = "varchar(255)")
+    private String frontTire;
+
+    @Comment("뒤 타이어 정보")
+    @Column(name = "rear_tire", nullable = false,columnDefinition = "varchar(255)")
+    private String rearTire;
 
     @Comment("차량 등록된 날짜")
     @Column(name = "created_at", nullable = false, columnDefinition = "datetime")
     private LocalDateTime createdAt;
-    @Comment("왼쪽 앞 바퀴")
-    @Column(name = "left_front_tire", nullable = false, columnDefinition = "varchar(36)")
-    @Enumerated(EnumType.STRING)
-    private TireStatusEnum LeftFrontTire;
-
-    @Comment("왼쪽 뒷 바퀴")
-    @Column(name = "left_back_tire", nullable = false, columnDefinition = "varchar(36)")
-    @Enumerated(EnumType.STRING)
-    private TireStatusEnum LeftBackTire;
-
-    @Comment("오른쪽 앞 바퀴")
-    @Column(name = "right_front_tire", nullable = false, columnDefinition = "varchar(36)")
-    @Enumerated(EnumType.STRING)
-    private TireStatusEnum RightFrontTire;
-
-    @Comment("오른쪽 뒤 바퀴")
-    @Column(name = "right_back_tire", nullable = false, columnDefinition = "varchar(36)")
-    @Enumerated(EnumType.STRING)
-    private TireStatusEnum RightBackTire;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
