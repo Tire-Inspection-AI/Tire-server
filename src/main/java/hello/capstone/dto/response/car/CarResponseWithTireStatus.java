@@ -12,6 +12,7 @@ public class CarResponseWithTireStatus {
 
     /**
      * Car_id로 차량 상세 페이지로 가면, 거기서 인공지능 모델 학습 결과로 타이어 상태 값 얻어서 반환한다.
+     * 차량 타이어마다 타이어 id와, 타이어의 상태 값.
      */
 
     private Long car_id;
@@ -41,23 +42,23 @@ public class CarResponseWithTireStatus {
     private String rightBackTireStatus;
 
 
-    public static CarResponseWithTireStatus of(Car car){
-        return CarResponseWithTireStatus.builder()
-                .car_id(car.getId())
-                .type(car.getType().name())
-                .model(car.getModel())
-                .fourth_digit_license_plate(car.getFourth_digit_license_plate())
-                .LeftFrontTireRecentChangeDate(car.getLeftFrontRecentChangeDate())
-                .LeftBackTireRecentChangeDate(car.getLeftBackRecentChangeDate())
-                .RightFrontTireRecentChangeDate(car.getRightFrontRecentChangeDate())
-                .RightBackTireRecentChangeDate(car.getRightBackRecentChangeDate())
-                .created_at(car.getCreatedAt())
-                .leftFrontTireStatus(car.getLeftFrontTire().name())
-                .leftBackTireStatus(car.getLeftBackTire().name())
-                .rightFrontTireStatus(car.getRightFrontTire().name())
-                .rightBackTireStatus(car.getRightBackTire().name())
-                .build();
-    }
+//    public static CarResponseWithTireStatus of(Car car){
+//        return CarResponseWithTireStatus.builder()
+//                .car_id(car.getId())
+//                .type(car.getType().name())
+//                .model(car.getModel())
+//                .fourth_digit_license_plate(car.getFourth_digit_license_plate())
+//                .LeftFrontTireRecentChangeDate(car.getLeftFrontRecentChangeDate())
+//                .LeftBackTireRecentChangeDate(car.getLeftBackRecentChangeDate())
+//                .RightFrontTireRecentChangeDate(car.getRightFrontRecentChangeDate())
+//                .RightBackTireRecentChangeDate(car.getRightBackRecentChangeDate())
+//                .created_at(car.getCreatedAt())
+//                .leftFrontTireStatus(car.getLeftFrontTire().name())
+//                .leftBackTireStatus(car.getLeftBackTire().name())
+//                .rightFrontTireStatus(car.getRightFrontTire().name())
+//                .rightBackTireStatus(car.getRightBackTire().name())
+//                .build();
+//    }
 
 }
 

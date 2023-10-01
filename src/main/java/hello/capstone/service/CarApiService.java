@@ -3,7 +3,7 @@ package hello.capstone.service;
 
 import hello.capstone.car_api.CarInfo;
 import hello.capstone.car_api.CarInfoProvider;
-import hello.capstone.dto.request.car_api.CarApiReqDto;
+import hello.capstone.dto.request.car.CarReqDto;
 import hello.capstone.exception.car.NotFoundException;
 import hello.capstone.exception.car.OwnerMismatchException;
 import hello.capstone.exception.car.SearchFailedException;
@@ -20,7 +20,7 @@ public class CarApiService {
 
     private final CarInfoProvider carInfoProvider;
 
-    public CarInfo getCarInfo(CarApiReqDto req) throws Exception{
+    public CarInfo getCarInfo(CarReqDto req) throws Exception{
 
         //받은 정보를 바탕으로 CarInfoResponseDto 만든다.
         Map<String, Object> attributes = carInfoProvider.getCarInfo(req);
@@ -48,6 +48,7 @@ public class CarApiService {
         }
 
         CarInfo carInfo = carInfoProvider.makeCarInfo(attributes);
+        carInfo.setRegistrationNumber(req.getRegiNumber());
         return carInfo;
     }
 

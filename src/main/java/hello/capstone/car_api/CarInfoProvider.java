@@ -1,7 +1,7 @@
 package hello.capstone.car_api;
 
 
-import hello.capstone.dto.request.car_api.CarApiReqDto;
+import hello.capstone.dto.request.car.CarReqDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -25,7 +25,7 @@ public class CarInfoProvider {
     @Value("${capstone.api.uri}")
     private String apiUri;
 
-    public Map<String, Object> getCarInfo(CarApiReqDto carApiReqDto){
+    public Map<String, Object> getCarInfo(CarReqDto carApiReqDto){
 
         //요청 바디 생성.
         Map<String, String> requestBody = new HashMap<>();

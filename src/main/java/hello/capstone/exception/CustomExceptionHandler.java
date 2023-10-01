@@ -63,20 +63,20 @@ public class CustomExceptionHandler {
 
     @ExceptionHandler(EmailCodeSendingFailureException.class)//email 관련 오류 -200~300
     public ResponseEntity<?> handleException(EmailCodeSendingFailureException e) {
-        Message message = new Message(e.getMessage(), -200, HttpStatus.BAD_REQUEST);
+        Message message = new Message(e.getMessage(), -200, HttpStatus.OK);
         return new ResponseEntity<>(message, message.getStatus());
     }
 
 
     @ExceptionHandler(EmailCodeExpiredException.class)//email 관련 오류 -200~300
     public ResponseEntity<?> handleException(EmailCodeExpiredException e) {
-        Message message = new Message(e.getMessage(), -201, HttpStatus.BAD_REQUEST);
+        Message message = new Message(e.getMessage(), -201, HttpStatus.OK);
         return new ResponseEntity<>(message, message.getStatus());
     }
 
     @ExceptionHandler(EmailCodeMismatchException.class)//email 관련 오류 -200~300
     public ResponseEntity<?> handleException(EmailCodeMismatchException e) {
-        Message message = new Message(e.getMessage(), -202, HttpStatus.BAD_REQUEST);
+        Message message = new Message(e.getMessage(), -202, HttpStatus.OK);
         return new ResponseEntity<>(message, message.getStatus());
     }
 

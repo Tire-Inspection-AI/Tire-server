@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import hello.capstone.car_api.CarInfo;
 import hello.capstone.domain.Message;
-import hello.capstone.dto.request.car_api.CarApiReqDto;
+import hello.capstone.dto.request.car.CarReqDto;
 import hello.capstone.service.CarApiService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/car-Information")
@@ -27,7 +26,7 @@ public class CarInformationApiController {
     private final CarApiService carApiService;
 
     @PostMapping("")
-    public void findCarInfo(HttpServletResponse response, @RequestBody CarApiReqDto carApiReqDto) throws Exception {
+    public void findCarInfo(HttpServletResponse response, @RequestBody CarReqDto carApiReqDto) throws Exception {
 
         ObjectMapper om = new ObjectMapper();
         om.registerModule(new JavaTimeModule());

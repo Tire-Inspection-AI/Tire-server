@@ -1,5 +1,5 @@
 package hello.capstone.util;
 
 public enum TireStatusEnum {
-    ReplaceRequired, RecommendReplacement, GoodCondition
+    Replace_Required, Recommend_Replacement, Good_Condition
 }

@@ -3,8 +3,6 @@ package hello.capstone.dto.response.car;
 import hello.capstone.domain.Car;
 import lombok.Builder;
 import lombok.Getter;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
@@ -12,35 +10,49 @@ import java.time.LocalDateTime;
 @Getter
 public class CarResponseDto {
 
+    /**
+     * 차량 정보 반환.
+     */
     private Long car_id;
+    private String name;
 
-    private String type;
+    private String vender;
 
-    private String model;
+    private String registrationNumber;
 
-    private Integer fourth_digit_license_plate;//차량 번호 뒷 4자리.
+    private Integer year;
 
-    private LocalDate LeftFrontTireRecentChangeDate;//년 월 입력
+    private String drive;
 
-    private LocalDate LeftBackTireRecentChangeDate;//년 월 입력
+    private Integer seats;
 
-    private LocalDate RightFrontTireRecentChangeDate;//년 월 입력
+    private String fuel;
 
-    private LocalDate RightBackTireRecentChangeDate;//년 월 입력
+    private Integer cc;
 
-    private LocalDateTime created_at;
+    private double fuelEconomy;
+
+    private String frontTire;
+
+    private String rearTire;
+
+    private LocalDateTime createdAt;
 
     public static CarResponseDto of(Car car){
         return CarResponseDto.builder()
                 .car_id(car.getId())
-                .type(car.getType().name())
-                .model(car.getModel())
-                .fourth_digit_license_plate(car.getFourth_digit_license_plate())
-                .LeftFrontTireRecentChangeDate(car.getLeftFrontRecentChangeDate())
-                .LeftBackTireRecentChangeDate(car.getLeftBackRecentChangeDate())
-                .RightFrontTireRecentChangeDate(car.getRightFrontRecentChangeDate())
-                .RightBackTireRecentChangeDate(car.getRightBackRecentChangeDate())
-                .created_at(car.getCreatedAt())
+                .name(car.getName())
+                .vender(car.getVender())
+                .registrationNumber(car.getRegistrationNumber())
+                .year(car.getYear())
+                .drive(car.getDrive())
+                .seats(car.getSeats())
+                .fuel(car.getFuel())
+                .cc(car.getCc())
+                .fuelEconomy(car.getFuelEconomy())
+                .frontTire(car.getFrontTire())
+                .rearTire(car.getRearTire())
+                .createdAt(car.getCreatedAt())
                 .build();
     }
 

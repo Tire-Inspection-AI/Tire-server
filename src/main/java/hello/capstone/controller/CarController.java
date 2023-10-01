@@ -3,9 +3,11 @@ package hello.capstone.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import hello.capstone.car_api.CarInfo;
 import hello.capstone.domain.Message;
-import hello.capstone.dto.request.car.NewCarReqDto;
+import hello.capstone.dto.request.car.CarReqDto;
 import hello.capstone.dto.response.car.CarResponseDto;
+import hello.capstone.service.CarApiService;
 import hello.capstone.service.CarService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,15 +29,19 @@ public class CarController {
 
     private final CarService carService;
 
+    private final CarApiService carApiService;
+
     @PostMapping("")
-    public void addCar(HttpServletResponse response, @RequestBody NewCarReqDto newCarReqDto) throws IOException {
+    public void addCar(HttpServletResponse response, @RequestBody CarReqDto carReqDto) throws Exception {
+
 
         ObjectMapper om = new ObjectMapper();
         om.registerModule(new JavaTimeModule());
 
         response.setContentType(MediaType.APPLICATION_JSON.toString());
 
-        CarResponseDto result = carService.savedCar(newCarReqDto);
+        CarInfo carInfo = carApiService.getCarInfo(carReqDto);
+        CarResponseDto result = carService.savedCar(carInfo,carReqDto);
 
         Message message = Message.builder()
                 .data(result)
