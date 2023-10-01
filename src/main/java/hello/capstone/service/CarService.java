@@ -8,6 +8,7 @@ import hello.capstone.domain.User;
 import hello.capstone.dto.request.car.CarReqDto;
 import hello.capstone.dto.response.car.CarResponseDto;
 import hello.capstone.exception.car.CarSavedFailException;
+import hello.capstone.exception.car.SearchFailedException;
 import hello.capstone.repository.CarRepository;
 import hello.capstone.repository.TireRepository;
 import hello.capstone.repository.UserRepository;
@@ -20,6 +21,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -103,5 +106,15 @@ public class CarService {
 
 
     }
+    @Transactional
+    public CarResponseDto searchByCarId(Long carId){
+
+            Optional<Car> car = carRepository.findById(carId);
+            if (car.isPresent())
+                return CarResponseDto.of(car.get());
+            else
+                throw new SearchFailedException("존재하지 않는 차량입니다.");
+    }
+
 
 }
