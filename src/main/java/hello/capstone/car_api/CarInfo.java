@@ -17,9 +17,6 @@ public class CarInfo {
 
     private String carVender;
 
-    private String subModel;
-    private String price;
-
     private String fuel;
     private String frontTire;
     private String rearTire;
@@ -29,15 +26,5 @@ public class CarInfo {
     private String carYear;
 
     private String cc;
-
-    private String mission;
-
-    private String carUrl;
-
-    private String vin;
-
-    private String eoilLiter;
-
-    private String wiper;
 
 }

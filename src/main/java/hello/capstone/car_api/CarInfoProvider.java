@@ -55,22 +55,15 @@ public class CarInfoProvider {
             if (data != null) {
                 return CarInfo.builder()
                         .drive((String) data.get("DRIVE"))
-                        .price((String) data.get("PRICE"))
                         .fuel((String) data.get("FUEL"))
                         .carName((String) data.get("CARNAME"))
                         .carVender((String) data.get("CARVENDER"))
-                        .subModel((String) data.get("SUBMODEL"))
                         .frontTire((String) data.get("FRONTTIRE"))
                         .rearTire((String) data.get("REARTIRE"))
                         .seats((String) data.get("SEATS"))
                         .fuelEconomy((String) data.get("FUELECO"))
                         .carYear((String) data.get("CARYEAR"))
                         .cc((String) data.get("CC"))
-                        .mission((String) data.get("MISSION"))
-                        .carUrl((String) data.get("CARURL"))
-                        .vin((String) data.get("VIN"))
-                        .eoilLiter((String) data.get("EOILLITER"))
-                        .wiper((String) data.get("WIPER"))
                         .build();
             }
         }
