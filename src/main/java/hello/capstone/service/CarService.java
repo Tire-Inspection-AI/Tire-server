@@ -7,6 +7,7 @@ import hello.capstone.domain.Tire;
 import hello.capstone.domain.User;
 import hello.capstone.dto.request.car.CarReqDto;
 import hello.capstone.dto.response.car.CarResponseDto;
+import hello.capstone.exception.car.CarDeleteFailException;
 import hello.capstone.exception.car.CarSavedFailException;
 import hello.capstone.exception.car.SearchFailedException;
 import hello.capstone.repository.CarRepository;
@@ -23,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -110,11 +110,34 @@ public class CarService {
     @Transactional
     public CarResponseDto searchByCarId(Long carId){
 
-            Optional<Car> car = carRepository.findById(carId);
-            if (car.isPresent())
-                return CarResponseDto.of(car.get());
-            else
-                throw new SearchFailedException("존재하지 않는 차량입니다.");
+
+        Long userId = SecurityContextHolderUtil.getUserId();
+        User user = userRepository.findById(userId).get();
+
+        List<Car> cars = user.getCars();
+        for (Car car : cars) {
+            if(car.getId()==carId){
+                return CarResponseDto.of(car);
+            }
+        }
+        throw new SearchFailedException("접근 권한이 없는 차량입니다.");
+    }
+
+    @Transactional
+    public void deleteByCarId(Long carId){
+
+        Long userId = SecurityContextHolderUtil.getUserId();
+        User user = userRepository.findById(userId).get();
+
+        List<Car> cars = user.getCars();
+        for (Car car : cars) {
+            if(car.getId()==carId){
+                carRepository.delete(car);
+                user.deleteCar(car);
+                return;
+            }
+        }
+        throw new CarDeleteFailException("차량 삭제에 실패했습니다.");
     }
 
     @Transactional

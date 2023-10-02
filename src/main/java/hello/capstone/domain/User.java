@@ -63,4 +63,11 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<Car> cars = new ArrayList<>();
 
+    public void deleteCar(Car car){cars.remove(car);}
+
+    public void addCar(Car car){
+        cars.add(car);
+        car.setUser(this);
+    }
+
 }
