@@ -1,7 +1,9 @@
 package hello.capstone.dto.response.car;
 
 import hello.capstone.domain.Car;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import java.time.LocalDateTime;
 
@@ -56,5 +58,27 @@ public class CarResponseDto {
                 .build();
     }
 
+    @Data
+    @AllArgsConstructor
+    @Builder
+    public static class CarBrief{
+        private Long car_id;
+        private String name;
+
+        private String vender;
+
+        private String registrationNumber;
+
+    }
+
+
+    public static CarResponseDto.CarBrief carBrief(Car car){
+        return CarResponseDto.CarBrief.builder()
+                .car_id(car.getId())
+                .name(car.getName())
+                .vender(car.getVender())
+                .registrationNumber(car.getRegistrationNumber())
+                .build();
+    }
 
 }
