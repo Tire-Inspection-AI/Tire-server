@@ -1,6 +1,7 @@
 package hello.capstone.exception;
 
 import hello.capstone.domain.Message;
+import hello.capstone.exception.car.CarDeleteFailException;
 import hello.capstone.exception.car.NotFoundException;
 import hello.capstone.exception.car.OwnerMismatchException;
 import hello.capstone.exception.car.SearchFailedException;
@@ -89,15 +90,22 @@ public class CustomExceptionHandler {
         return new ResponseEntity<>(message, message.getStatus());
     }
 
-    @ExceptionHandler(NotFoundException.class)//email 관련 오류 -200~300
+    @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<?> handleException(NotFoundException e) {
         Message message = new Message(e.getMessage(), -251, HttpStatus.BAD_REQUEST);
         return new ResponseEntity<>(message, message.getStatus());
     }
 
-    @ExceptionHandler(SearchFailedException.class)//email 관련 오류 -200~300
+    @ExceptionHandler(SearchFailedException.class)
     public ResponseEntity<?> handleException(SearchFailedException e) {
         Message message = new Message(e.getMessage(), -252, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(message, message.getStatus());
+    }
+
+
+    @ExceptionHandler(CarDeleteFailException.class)
+    public ResponseEntity<?> handleException(CarDeleteFailException e) {
+        Message message = new Message(e.getMessage(), -253, HttpStatus.BAD_REQUEST);
         return new ResponseEntity<>(message, message.getStatus());
     }
 

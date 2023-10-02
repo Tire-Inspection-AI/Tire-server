@@ -66,6 +66,22 @@ public class CarController {
         om.writeValue(response.getOutputStream(), message);
     }
 
+    @DeleteMapping("{carId}")
+    public void deleteCarByCarId(@PathVariable Long carId, HttpServletResponse response) throws Exception {
+
+        ObjectMapper om = new ObjectMapper();
+        om.registerModule(new JavaTimeModule());
+        response.setContentType(MediaType.APPLICATION_JSON.toString());
+
+        carService.deleteByCarId(carId);
+        Message message = Message.builder()
+                .status(HttpStatus.OK)
+                .message("success")
+                .build();
+
+        om.writeValue(response.getOutputStream(), message);
+    }
+
     @GetMapping()
     public void searchByUserId(HttpServletResponse response) throws Exception {
 
