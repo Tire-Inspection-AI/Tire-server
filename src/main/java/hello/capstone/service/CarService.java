@@ -10,6 +10,7 @@ import hello.capstone.dto.response.car.CarResponseDto;
 import hello.capstone.exception.car.CarDeleteFailException;
 import hello.capstone.exception.car.CarSavedFailException;
 import hello.capstone.exception.car.SearchFailedException;
+import hello.capstone.exception.user.UserNotFoundException;
 import hello.capstone.repository.CarRepository;
 import hello.capstone.repository.TireRepository;
 import hello.capstone.repository.UserRepository;
@@ -21,9 +22,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -41,7 +45,7 @@ public class CarService {
 
         try{
             Long userId = SecurityContextHolderUtil.getUserId();
-            User user = userRepository.findById(userId).get();
+            User user = userRepository.findById(userId).orElseThrow(()-> new UserNotFoundException("사용자를 찾을 수 업습니다."));
 
             /**
              * 차량 1대와, 그 차량 번호로 타이어 4개 저장.
@@ -64,41 +68,14 @@ public class CarService {
 
             Car savedCar = carRepository.save(newCar);
 
-            Tire Front_Left = Tire.builder()
-                    .recentChangeDate(carReqDto.getFrontLeftTireRecentChangeDate())
-                    .tirePosition(TirePositionEnum.Front_Left)
-                    .tireStatus(TireStatusEnum.Good_Condition)
-                    .car(savedCar)
-                    .build();
+            List<Tire> tires= Arrays.asList(
+                createTire(savedCar,TirePositionEnum.Front_Right,carReqDto.getFrontRightTireRecentChangeDate()),
+                createTire(savedCar,TirePositionEnum.Front_Left,carReqDto.getFrontLeftTireRecentChangeDate()),
+                createTire(savedCar,TirePositionEnum.Rear_Left,carReqDto.getRearLeftTireRecentChangeDate()),
+                createTire(savedCar,TirePositionEnum.Rear_Right,carReqDto.getRearRightTireRecentChangeDate())
+            );
 
-            Tire savedF_L = tireRepository.save(Front_Left);
-
-            Tire Front_Right = Tire.builder()
-                    .recentChangeDate(carReqDto.getFrontRightTireRecentChangeDate())
-                    .tirePosition(TirePositionEnum.Front_Right)
-                    .tireStatus(TireStatusEnum.Good_Condition)
-                    .car(savedCar)
-                    .build();
-
-            Tire savedF_R = tireRepository.save(Front_Right);
-
-            Tire Rear_Left = Tire.builder()
-                    .recentChangeDate(carReqDto.getRearLeftTireRecentChangeDate())
-                    .tirePosition(TirePositionEnum.Rear_Left)
-                    .tireStatus(TireStatusEnum.Good_Condition)
-                    .car(savedCar)
-                    .build();
-
-            Tire savedR_L = tireRepository.save(Rear_Left);
-
-            Tire Rear_Right = Tire.builder()
-                    .recentChangeDate(carReqDto.getRearRightTireRecentChangeDate())
-                    .tirePosition(TirePositionEnum.Rear_Right)
-                    .tireStatus(TireStatusEnum.Good_Condition)
-                    .car(savedCar)
-                    .build();
-
-            Tire savedR_R = tireRepository.save(Rear_Right);
+            tireRepository.saveAll(tires);
 
             return CarResponseDto.carBrief(savedCar);
         }catch(Exception e){
@@ -107,37 +84,38 @@ public class CarService {
 
 
     }
+
     @Transactional
     public CarResponseDto searchByCarId(Long carId){
 
-
         Long userId = SecurityContextHolderUtil.getUserId();
-        User user = userRepository.findById(userId).get();
+        User user = userRepository.findById(userId).orElseThrow(()->new UserNotFoundException("사용자를 찾을 수 없습니다."));
 
-        List<Car> cars = user.getCars();
-        for (Car car : cars) {
-            if(car.getId()==carId){
-                return CarResponseDto.of(car);
-            }
-        }
-        throw new SearchFailedException("접근 권한이 없는 차량입니다.");
+        Car car  = user.getCars().stream()
+                .filter(c -> c.getId().equals(carId))
+                .findFirst()
+                .orElseThrow(()->new SearchFailedException("접근 권한이 없는 차량입니다."));
+        return CarResponseDto.of(car);
+
     }
 
     @Transactional
     public void deleteByCarId(Long carId){
 
         Long userId = SecurityContextHolderUtil.getUserId();
-        User user = userRepository.findById(userId).get();
+        User user = userRepository.findById(userId).orElseThrow(()->new UserNotFoundException("사용자를 찾을 수 없습니다."));
 
-        List<Car> cars = user.getCars();
-        for (Car car : cars) {
-            if(car.getId()==carId){
-                carRepository.delete(car);
-                user.deleteCar(car);
-                return;
-            }
-        }
-        throw new CarDeleteFailException("차량 삭제에 실패했습니다.");
+        Optional<Car> carToDelete = user.getCars().stream()
+                        .filter(car -> car.getId().equals(carId))
+                        .findFirst();
+
+        carToDelete.ifPresent(car -> {
+            carRepository.delete(car);
+            user.deleteCar(car);
+        });
+
+        if(carToDelete.isEmpty())
+            throw new CarDeleteFailException("차량 삭제에 실패했습니다.");
     }
 
     @Transactional
@@ -146,13 +124,19 @@ public class CarService {
         Long userId = SecurityContextHolderUtil.getUserId();
         List<Car> cars = carRepository.findByUserId(userId);
 
-        List<CarResponseDto.CarBrief> result = new ArrayList<>();
-        for (Car car : cars) {
-            result.add(CarResponseDto.carBrief(car));
-        }
-        return result;
+        return cars.stream()
+                .map(CarResponseDto::carBrief)
+                .collect(Collectors.toList());
     }
 
+    private static Tire createTire(Car car, TirePositionEnum position, LocalDate recentChangeDate) {
+        return Tire.builder()
+                .recentChangeDate(recentChangeDate)
+                .tirePosition(position)
+                .tireStatus(TireStatusEnum.Good_Condition)
+                .car(car)
+                .build();
+    }
 
 
 
