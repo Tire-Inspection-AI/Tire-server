@@ -16,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -37,7 +38,7 @@ public class CarController {
         response.setContentType(MediaType.APPLICATION_JSON.toString());
 
         CarInfo carInfo = carApiService.getCarInfo(carReqDto);
-        CarResponseDto result = carService.savedCar(carInfo,carReqDto);
+        CarResponseDto.CarBrief result = carService.savedCar(carInfo,carReqDto);
 
         Message message = Message.builder()
                 .data(result)
@@ -49,8 +50,7 @@ public class CarController {
     }
 
     @GetMapping("{carId}")
-    public void CarDetails(@PathVariable Long carId, HttpServletResponse response) throws Exception {
-
+    public void searchByCarId(@PathVariable Long carId, HttpServletResponse response) throws Exception {
 
         ObjectMapper om = new ObjectMapper();
         om.registerModule(new JavaTimeModule());
@@ -63,6 +63,24 @@ public class CarController {
                 .message("success")
                 .build();
 
+        om.writeValue(response.getOutputStream(), message);
+    }
+
+    @GetMapping()
+    public void searchByUserId(HttpServletResponse response) throws Exception {
+
+
+        ObjectMapper om = new ObjectMapper();
+        om.registerModule(new JavaTimeModule());
+        response.setContentType(MediaType.APPLICATION_JSON.toString());
+
+
+        List<CarResponseDto.CarBrief> result = carService.searchByUserId();
+        Message message = Message.builder()
+                .data(result)
+                .status(HttpStatus.OK)
+                .message("success")
+                .build();
         om.writeValue(response.getOutputStream(), message);
     }
 }

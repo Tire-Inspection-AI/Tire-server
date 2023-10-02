@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,7 +37,7 @@ public class CarService {
     private final TireRepository tireRepository;
 
     @Transactional
-    public CarResponseDto savedCar(CarInfo carInfo, CarReqDto carReqDto){
+    public CarResponseDto.CarBrief savedCar(CarInfo carInfo, CarReqDto carReqDto){
 
         try{
             Long userId = SecurityContextHolderUtil.getUserId();
@@ -99,7 +100,7 @@ public class CarService {
 
             Tire savedR_R = tireRepository.save(Rear_Right);
 
-            return CarResponseDto.of(savedCar);
+            return CarResponseDto.carBrief(savedCar);
         }catch(Exception e){
             throw new CarSavedFailException("차량 정보 저장에 실패하였습니다.");
         }
@@ -115,6 +116,21 @@ public class CarService {
             else
                 throw new SearchFailedException("존재하지 않는 차량입니다.");
     }
+
+    @Transactional
+    public List<CarResponseDto.CarBrief> searchByUserId(){
+
+        Long userId = SecurityContextHolderUtil.getUserId();
+        List<Car> cars = carRepository.findByUserId(userId);
+
+        List<CarResponseDto.CarBrief> result = new ArrayList<>();
+        for (Car car : cars) {
+            result.add(CarResponseDto.carBrief(car));
+        }
+        return result;
+    }
+
+
 
 
 }
