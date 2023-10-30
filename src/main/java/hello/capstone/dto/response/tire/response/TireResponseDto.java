@@ -22,8 +22,10 @@ public class TireResponseDto {
     private String imageBase64;
 
     public static TireResponseDto of (Tire tire){
-        String imageBase64 = Base64.getEncoder().encodeToString(tire.getImage());
-
+        String imageBase64 = null;
+        if (tire.getImage() != null) {
+            imageBase64 = Base64.getEncoder().encodeToString(tire.getImage());
+        }
         return TireResponseDto.builder()
                 .tire_id(tire.getId())
                 .tireStatus(tire.getTireStatus())
