@@ -8,33 +8,29 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.Base64;
 
 @Data
 @Builder
 public class TireResponseDto {
 
-    /**
-     * 간략한 reponse는 타이어 아이디, tirestatus,  tire 포지션만 반환
-     * 상세한 response는 사진 + 마모도를? 정확도 까지 반환해야 한다.
-     */
-
     private Long tire_id;
     private TireStatusEnum tireStatus;
     private TirePositionEnum tirePosition;
     private LocalDate tireRecentChangeDate;//년 월 입력
-
-    /**
-     * 사진이 추가 되어야 한다.
-     */
     private double wear; //마모도
-
+    private String imageBase64;
 
     public static TireResponseDto of (Tire tire){
+        String imageBase64 = Base64.getEncoder().encodeToString(tire.getImage());
+
         return TireResponseDto.builder()
                 .tire_id(tire.getId())
                 .tireStatus(tire.getTireStatus())
                 .tirePosition(tire.getTirePosition())
                 .tireRecentChangeDate(tire.getRecentChangeDate())
+                .wear(tire.getWear())
+                .imageBase64(imageBase64)
                 .build();
     }
 
