@@ -109,6 +109,7 @@ public class CarService {
                 .filter(c -> c.getId().equals(carId))
                 .findFirst()
                 .orElseThrow(()->new SearchFailedException("접근 권한이 없는 차량입니다."));
+        log.info("car.getTires={}", car.getTires());
         return CarResponseWithTireStatus.of(car);
     }
 

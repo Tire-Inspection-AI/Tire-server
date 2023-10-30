@@ -4,11 +4,13 @@ package hello.capstone.dto.response.car;
 import hello.capstone.domain.Car;
 import hello.capstone.dto.response.tire.response.TireResponseDto;
 import lombok.Builder;
+import lombok.Getter;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Builder
+@Getter
 public class CarResponseWithTireStatus {
 
     /**

@@ -9,5 +9,4 @@ public class TireService {
      * 2.합습시킨 결과 + 사진, 최근 타이어 교체일 같은 상세 정보까지 프론트에 준다.  반환 타입:
      */
 
-    public
 }
