@@ -63,7 +63,7 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/api/test/**")
                 .access("hasRole('ROLE_USER')")
-                .antMatchers("/api/social-login/**", "/api/login", "/api/user/one","/login/mailConfirm","/login/authenticate")
+                .antMatchers("/api/social-login/**", "/api/login", "/api/user/one","/login/mailConfirm","/login/authenticate","/api/tires/upload-form","/api/tires/**")
                 .permitAll()
                 .antMatchers("/api/**")
                 .access("hasRole('ROLE_USER')")

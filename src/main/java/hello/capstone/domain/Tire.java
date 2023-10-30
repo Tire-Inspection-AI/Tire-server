@@ -38,6 +38,13 @@ public class Tire {
     @Enumerated(EnumType.STRING)
     private TireStatusEnum tireStatus;
 
+    @Comment("타이어 마모도")
+    @Column(name = "wear", nullable = false)
+    private double wear;
+    @Lob
+    @Column(name = "image")
+    private byte[] image;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "car_id", nullable = false)
     private Car car;
