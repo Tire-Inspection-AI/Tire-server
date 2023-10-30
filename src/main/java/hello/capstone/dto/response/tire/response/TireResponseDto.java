@@ -10,6 +10,7 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Data
+@Builder
 public class TireResponseDto {
 
     /**
@@ -26,6 +27,16 @@ public class TireResponseDto {
      * 사진이 추가 되어야 한다.
      */
     private double wear; //마모도
+
+
+    public static TireResponseDto of (Tire tire){
+        return TireResponseDto.builder()
+                .tire_id(tire.getId())
+                .tireStatus(tire.getTireStatus())
+                .tirePosition(tire.getTirePosition())
+                .tireRecentChangeDate(tire.getRecentChangeDate())
+                .build();
+    }
 
     @Data
     @AllArgsConstructor

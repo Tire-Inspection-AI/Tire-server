@@ -8,6 +8,7 @@ import hello.capstone.exception.car.SearchFailedException;
 import hello.capstone.exception.email.EmailCodeExpiredException;
 import hello.capstone.exception.email.EmailCodeMismatchException;
 import hello.capstone.exception.email.EmailCodeSendingFailureException;
+import hello.capstone.exception.tire.TireNotFoundException;
 import hello.capstone.exception.token.token.TokenExpiredException;
 import hello.capstone.exception.user.*;
 import org.springframework.http.HttpStatus;
@@ -108,5 +109,12 @@ public class CustomExceptionHandler {
         Message message = new Message(e.getMessage(), -253, HttpStatus.BAD_REQUEST);
         return new ResponseEntity<>(message, message.getStatus());
     }
+
+    @ExceptionHandler(TireNotFoundException.class)
+    public ResponseEntity<?> handleException(TireNotFoundException e) {
+        Message message = new Message(e.getMessage(), -300, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(message, message.getStatus());
+    }
+
 
 }

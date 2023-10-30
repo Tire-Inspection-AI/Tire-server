@@ -1,5 +1,28 @@
 package hello.capstone.service;
 
+
+import hello.capstone.domain.Car;
+import hello.capstone.domain.Tire;
+import hello.capstone.domain.User;
+import hello.capstone.dto.response.car.CarResponseDto;
+import hello.capstone.dto.response.tire.response.TireResponseDto;
+import hello.capstone.exception.car.SearchFailedException;
+import hello.capstone.exception.tire.TireNotFoundException;
+import hello.capstone.exception.user.UserNotFoundException;
+import hello.capstone.repository.TireRepository;
+import hello.capstone.repository.UserRepository;
+import hello.capstone.util.SecurityContextHolderUtil;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+@RequiredArgsConstructor
+@Slf4j
 public class TireService {
 
     /**
@@ -8,5 +31,20 @@ public class TireService {
      * 1.헉습시킨 결과인 TireBrief 정보만 프론트한테 준다. 반환 타입: TireResponseDto.tireBrief
      * 2.합습시킨 결과 + 사진, 최근 타이어 교체일 같은 상세 정보까지 프론트에 준다.  반환 타입:
      */
+    private final UserRepository userRepository;
 
+    @Transactional
+    public TireResponseDto searchByTireId(Long tireId){
+
+        Long userId = SecurityContextHolderUtil.getUserId();
+        User user = userRepository.findById(userId).orElseThrow(()-> new UserNotFoundException("사용자를 찾을 수 업습니다."));
+
+        Optional<Tire> optionalTire = user.getCars().stream()
+                .flatMap(car -> car.getTires().stream())
+                .filter(tire -> tire.getId() == tireId)
+                .findFirst();
+
+        Tire tire = optionalTire.orElseThrow(() -> new TireNotFoundException("접근할 수 없는 타이어 정보 입니다."));
+        return TireResponseDto.of(tire);
+    }
 }
