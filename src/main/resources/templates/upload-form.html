@@ -8,10 +8,12 @@
     <div class="py-5 text-center"> <h2>타이어 사진 등록 폼</h2>
     </div>
     <h4 class="mb-3">타이어 입력</h4>
-    <form th:action method="post" enctype="multipart/form-data">
+    <form th:action="@{'/api/tires/' + ${tireId} + '/image'}" method="post" enctype="multipart/form-data">
         <ul>
-            <li>파일<input type="file" name="file" ></li> </ul>
-        <input type="submit"/>
+            <li>타이어 ID: <input type="text" name="tireId" th:value="${tireId}" /></li>
+            <li>파일: <input type="file" name="image" /></li>
+        </ul>
+        <input type="submit" value="이미지 업로드" />
     </form>
 </div> <!-- /container -->
 </body>

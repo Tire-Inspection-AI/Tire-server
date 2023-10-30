@@ -1,12 +1,9 @@
 package hello.capstone.service;
 
 
-import hello.capstone.domain.Car;
 import hello.capstone.domain.Tire;
 import hello.capstone.domain.User;
-import hello.capstone.dto.response.car.CarResponseDto;
 import hello.capstone.dto.response.tire.response.TireResponseDto;
-import hello.capstone.exception.car.SearchFailedException;
 import hello.capstone.exception.tire.TireNotFoundException;
 import hello.capstone.exception.user.UserNotFoundException;
 import hello.capstone.repository.TireRepository;
@@ -16,8 +13,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
+import java.io.IOException;
 import java.util.Optional;
 
 @Service
@@ -32,6 +30,25 @@ public class TireService {
      * 2.합습시킨 결과 + 사진, 최근 타이어 교체일 같은 상세 정보까지 프론트에 준다.  반환 타입:
      */
     private final UserRepository userRepository;
+
+    private final TireRepository tireRepository;
+
+    @Transactional
+    public void saveTireImage(Long tireId, MultipartFile imageFile){
+        //이미지 파일을 바이트 배열로 변환
+        byte[] imageBytes;
+        try{
+            imageBytes = imageFile.getBytes();
+        }catch (IOException e){
+            throw new RuntimeException("사진을 읽는데 실패하였습니다.");
+        }
+
+        Tire tire = tireRepository.findById(tireId)
+                .orElseThrow(() -> new TireNotFoundException("타이어가 존재하지 않습니다."));
+
+        //이미지 데이터 설정
+        tire.setImage(imageBytes);
+    }
 
     @Transactional
     public TireResponseDto searchByTireId(Long tireId){
