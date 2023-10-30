@@ -75,7 +75,7 @@ public class CarController {
         response.setContentType(MediaType.APPLICATION_JSON.toString());
 
         /**
-         * 학습을 돌리고, 그 결과를 반환해야 한다.
+         * 바퀴 4개에 대해서 학습을 돌리고, 그 결과를 반환해야 한다.
          * 즉, 학습을 돌리는 과정이 들어갸아 하는 자리이다.
          * 인공지능한테 사진을 줘야 함
          */
