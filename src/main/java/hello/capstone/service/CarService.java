@@ -78,13 +78,12 @@ public class CarService {
             tireRepository.saveAll(tires);
 
             return CarResponseDto.carBrief(savedCar);
-        }catch(Exception e){
+        }
+        catch(Exception e){
             throw new CarSavedFailException("차량 정보 저장에 실패하였습니다.");
         }
 
-
     }
-
     @Transactional
     public CarResponseDto searchByCarId(Long carId){
 
