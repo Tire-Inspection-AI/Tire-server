@@ -1,12 +1,12 @@
 package hello.capstone.dto.response.car;
 
 
-import hello.capstone.domain.Tire;
+import hello.capstone.domain.Car;
+import hello.capstone.dto.response.tire.response.TireResponseDto;
 import lombok.Builder;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Builder
 public class CarResponseWithTireStatus {
@@ -19,31 +19,29 @@ public class CarResponseWithTireStatus {
 
     private Long car_id;
 
-    private String type;
+    private String name;
 
-    private String model;
+    private String registrationNumber;//차량 번호 뒷 4자리.
 
-    private Integer fourth_digit_license_plate;//차량 번호 뒷 4자리.
+    private List<TireResponseDto.TireBrief> tires;
 
-    private LocalDate LeftFrontTireRecentChangeDate;//년 월 입력
 
-    private LocalDate LeftBackTireRecentChangeDate;//년 월 입력
+    public static CarResponseWithTireStatus of(Car car) {
+        List<TireResponseDto.TireBrief> tireBriefs = car.getTires().stream()
+                .map(tire -> TireResponseDto.TireBrief.builder()
+                        // 여기에서 Tire 엔터티의 필드를 TireBrief로 매핑
+                        .tire_id(tire.getId())
+                        .tireStatus(tire.getTireStatus())
+                        .tirePosition(tire.getTirePosition())
+                        .build())
+                .collect(Collectors.toList());
 
-    private LocalDate RightFrontTireRecentChangeDate;//년 월 입력
-
-    private LocalDate RightBackTireRecentChangeDate;//년 월 입력
-
-    private LocalDateTime created_at;
-
-    private String leftFrontTireStatus;
-
-    private String leftBackTireStatus;
-
-    private String rightFrontTireStatus;
-
-    private String rightBackTireStatus;
-
-    private List<Tire> tires;
-
+        return CarResponseWithTireStatus.builder()
+                .car_id(car.getId())
+                .name(car.getName())
+                .registrationNumber(car.getRegistrationNumber())
+                .tires(tireBriefs)
+                .build();
+    }
 }
 

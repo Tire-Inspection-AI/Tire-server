@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDate;
+
 @Data
 public class TireResponseDto {
 
@@ -20,6 +22,7 @@ public class TireResponseDto {
     private Long tire_id;
     private TireStatusEnum tireStatus;
     private TirePositionEnum tirePosition;
+    private LocalDate LeftFrontTireRecentChangeDate;//년 월 입력
 
     private double wear; //마모도
 
