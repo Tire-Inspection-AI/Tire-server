@@ -4,8 +4,5 @@ import lombok.Data;
 
 @Data
 public class TireAiRequest {
-
-    /**
-     * 사진만 간단하게 AI한테 주도록 하자
-     */
+    private String imageBase64;//이미지 데이터를 Base64로 인코딩된 문자열로 전송함
 }
