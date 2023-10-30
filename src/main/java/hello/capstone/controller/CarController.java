@@ -7,6 +7,7 @@ import hello.capstone.car_api.CarInfo;
 import hello.capstone.domain.Message;
 import hello.capstone.dto.request.car.CarReqDto;
 import hello.capstone.dto.response.car.CarResponseDto;
+import hello.capstone.dto.response.car.CarResponseWithTireStatus;
 import hello.capstone.service.CarApiService;
 import hello.capstone.service.CarService;
 import lombok.RequiredArgsConstructor;
@@ -57,6 +58,23 @@ public class CarController {
         response.setContentType(MediaType.APPLICATION_JSON.toString());
 
         CarResponseDto result = carService.searchByCarId(carId);
+        Message message = Message.builder()
+                .data(result)
+                .status(HttpStatus.OK)
+                .message("success")
+                .build();
+
+        om.writeValue(response.getOutputStream(), message);
+    }
+
+    @GetMapping("{carId}/tires")
+    public void searchByCarIdWithTires(@PathVariable Long carId, HttpServletResponse response) throws Exception {
+
+        ObjectMapper om = new ObjectMapper();
+        om.registerModule(new JavaTimeModule());
+        response.setContentType(MediaType.APPLICATION_JSON.toString());
+
+        CarResponseWithTireStatus result = carService.searchByCarIdWithTires(carId);
         Message message = Message.builder()
                 .data(result)
                 .status(HttpStatus.OK)

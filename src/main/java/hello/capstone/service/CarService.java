@@ -7,6 +7,7 @@ import hello.capstone.domain.Tire;
 import hello.capstone.domain.User;
 import hello.capstone.dto.request.car.CarReqDto;
 import hello.capstone.dto.response.car.CarResponseDto;
+import hello.capstone.dto.response.car.CarResponseWithTireStatus;
 import hello.capstone.exception.car.CarDeleteFailException;
 import hello.capstone.exception.car.CarSavedFailException;
 import hello.capstone.exception.car.SearchFailedException;
@@ -85,7 +86,7 @@ public class CarService {
 
     }
     @Transactional
-    public CarResponseDto searchByCarId(Long carId){
+    public CarResponseDto searchByCarId(Long carId){//Car의 상세 정보 보여줌. Tire의 정보는 없다.
 
         Long userId = SecurityContextHolderUtil.getUserId();
         User user = userRepository.findById(userId).orElseThrow(()->new UserNotFoundException("사용자를 찾을 수 없습니다."));
@@ -96,6 +97,19 @@ public class CarService {
                 .orElseThrow(()->new SearchFailedException("접근 권한이 없는 차량입니다."));
         return CarResponseDto.of(car);
 
+    }
+
+    @Transactional
+    public CarResponseWithTireStatus searchByCarIdWithTires(Long carId){//Car의 간략한 정보와, Tires의 정보들을 보여준다.
+
+        Long userId = SecurityContextHolderUtil.getUserId();
+        User user = userRepository.findById(userId).orElseThrow(()->new UserNotFoundException("사용자를 찾을 수 없습니다."));
+
+        Car car  = user.getCars().stream()
+                .filter(c -> c.getId().equals(carId))
+                .findFirst()
+                .orElseThrow(()->new SearchFailedException("접근 권한이 없는 차량입니다."));
+        return CarResponseWithTireStatus.of(car);
     }
 
     @Transactional

@@ -1,8 +1,6 @@
 package hello.capstone.dto.response.tire.response;
 
-import hello.capstone.domain.Car;
 import hello.capstone.domain.Tire;
-import hello.capstone.dto.response.car.CarResponseDto;
 import hello.capstone.util.TirePositionEnum;
 import hello.capstone.util.TireStatusEnum;
 import lombok.AllArgsConstructor;
@@ -22,8 +20,11 @@ public class TireResponseDto {
     private Long tire_id;
     private TireStatusEnum tireStatus;
     private TirePositionEnum tirePosition;
-    private LocalDate LeftFrontTireRecentChangeDate;//년 월 입력
+    private LocalDate tireRecentChangeDate;//년 월 입력
 
+    /**
+     * 사진이 추가 되어야 한다.
+     */
     private double wear; //마모도
 
     @Data
