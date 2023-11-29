@@ -15,13 +15,18 @@ import java.util.Base64;
 public class TireResponseDto {
 
     private Long tire_id;
+
     private TireStatusEnum tireStatus;
+
     private TirePositionEnum tirePosition;
+
     private LocalDate tireRecentChangeDate;//년 월 입력
+
     private double wear; //마모도
+
     private String imageBase64;
 
-    public static TireResponseDto of (Tire tire){
+    public static TireResponseDto of(Tire tire) {
         String imageBase64 = null;
         if (tire.getImage() != null) {
             imageBase64 = Base64.getEncoder().encodeToString(tire.getImage());
@@ -39,13 +44,13 @@ public class TireResponseDto {
     @Data
     @AllArgsConstructor
     @Builder
-    public static class TireBrief{
+    public static class TireBrief {
         private Long tire_id;
         private TireStatusEnum tireStatus;
         private TirePositionEnum tirePosition;
     }
 
-    public static TireResponseDto.TireBrief tireBrief(Tire tire){
+    public static TireResponseDto.TireBrief tireBrief(Tire tire) {
         return TireBrief.builder()
                 .tire_id(tire.getId())
                 .tireStatus(tire.getTireStatus())

@@ -5,6 +5,7 @@ import hello.capstone.domain.entity.Tire;
 import hello.capstone.domain.entity.User;
 import hello.capstone.dto.response.tire.response.TireResponseDto;
 import hello.capstone.exception.tire.TireNotFoundException;
+import hello.capstone.exception.tire.TireSearchFailedException;
 import hello.capstone.exception.user.UserNotFoundException;
 import hello.capstone.repository.TireRepository;
 import hello.capstone.repository.UserRepository;
@@ -23,12 +24,6 @@ import java.util.Optional;
 @Slf4j
 public class TireService {
 
-    /**
-     * 바퀴의 사진을 모델에 넘기고, 학습시킨 결과(마모도, tirestatus)를 얻어오고 사진과 함꼐 프론트에 반환해야 한다.
-     *
-     * 1.헉습시킨 결과인 TireBrief 정보만 프론트한테 준다. 반환 타입: TireResponseDto.tireBrief
-     * 2.합습시킨 결과 + 사진, 최근 타이어 교체일 같은 상세 정보까지 프론트에 준다.  반환 타입:
-     */
     private final UserRepository userRepository;
 
     private final TireRepository tireRepository;
@@ -58,10 +53,10 @@ public class TireService {
 
         Optional<Tire> optionalTire = user.getCars().stream()
                 .flatMap(car -> car.getTires().stream())
-                .filter(tire -> tire.getId() == tireId)
+                .filter(tire -> tire.getId().equals(tireId))
                 .findFirst();
 
-        Tire tire = optionalTire.orElseThrow(() -> new TireNotFoundException("접근할 수 없는 타이어 정보 입니다."));
+        Tire tire = optionalTire.orElseThrow(() -> new TireSearchFailedException("접근할 수 없는 타이어 정보 입니다."));
         return TireResponseDto.of(tire);
     }
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import hello.capstone.domain.entity.Tire;
 import hello.capstone.dto.request.tire.TireAIReqDto;
 import hello.capstone.dto.response.tire.response.TireAIResponseDto;
+import hello.capstone.exception.ai.AICommunicationException;
 import hello.capstone.exception.tire.TireNotFoundException;
 import hello.capstone.repository.TireRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,20 +29,15 @@ public class TireWearInspectService {
 
     @Transactional
     public void inspectTireWear(Long tireId) {
-
         Tire tire;
         try {
             tire = tireRepository.findById(tireId).orElseThrow(() -> new TireNotFoundException("타이어를 찾을 수 없습니다."));
-            log.info("타이어를 find함");
-
-            // ... 나머지 코드 ...
         } catch (Exception e) {
             log.error("에러 발생: {}", e.getMessage(), e);
-            throw e; // 에러를 다시 throw하여 롤백되도록 함
+            throw e;
         }
         TireAIReqDto tireRequest = TireAIReqDto.of(tire);
         String requestJson = convertRequestToJson(tireRequest);
-        log.info("타이어 보낼 string만듬");
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -49,16 +45,16 @@ public class TireWearInspectService {
 
         ResponseEntity<TireAIResponseDto> response = restTemplate.exchange(aiServerUrl, HttpMethod.POST, entity, TireAIResponseDto.class);
 
-        if (response.getStatusCode() == HttpStatus.OK) {
+        if (response.getStatusCode().equals(HttpStatus.OK)) {
             TireAIResponseDto responseDto = response.getBody();
             log.info("인공지능으로 부터 받은 타이어 아이디는 ={}", responseDto.getTireId());
             log.info("인공지능으로 부터 받은 타이어 상태값 ={}", responseDto.getTireStatusEnum());
+
             tire.setTireStatus(responseDto.getTireStatusEnum());
-            // 타이어 업데이트 및 저장
             tireRepository.save(tire);
-        } else {
-            throw new RuntimeException("AI 서버에서 오류 응답을 받았습니다. 상태 코드: " + response.getStatusCode());
+            return;
         }
+        throw new AICommunicationException("인공지능 서버와 통신에 실패하였습니다.");
 
     }
 
@@ -68,7 +64,6 @@ public class TireWearInspectService {
             return objectMapper.writeValueAsString(tireRequest);
         } catch (Exception e) {
             // JSON 직렬화 중 예외 처리
-            e.printStackTrace();
             throw new RuntimeException("json으로 request 변환 실패");
         }
     }

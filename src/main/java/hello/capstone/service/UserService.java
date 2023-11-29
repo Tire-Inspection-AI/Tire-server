@@ -63,7 +63,7 @@ public class UserService {
 
     public User findOne(Long id) throws Exception {
         Optional<User> findUser = userRepository.findById(id);
-        if (!findUser.isPresent()) {
+        if (findUser.isEmpty()) {
             throw new UserNotFoundException("해당 [id]를 갖는 유저를 찾을 수 없습니다.");
         }
 
@@ -82,17 +82,14 @@ public class UserService {
         String username = SecurityContextHolderUtil.getUsername();
 
         Optional<User> findUser = userRepository.findByUsername(username);
-        if(!findUser.isPresent()){
+        if(findUser.isEmpty()){
             throw new SecurityContextUserNotFoundException("유저를 찾을 수 없습니다.");
         }
         User user = findUser.get();
         userRepository.delete(user);
 
         Optional<RefreshToken> findRefreshToken = refreshTokenRepository.findByUserId(user.getId());
-
-        if(findRefreshToken.isPresent()){
-            refreshTokenRepository.delete(findRefreshToken.get());
-        }
+        findRefreshToken.ifPresent(refreshTokenRepository::delete);
         return true;
     }
 

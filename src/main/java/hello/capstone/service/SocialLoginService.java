@@ -29,6 +29,7 @@ import java.util.UUID;
 public class SocialLoginService {
 
     private final String BEARER_TYPE = "Bearer";
+
     private final ClientRegistrationRepository clientRegistrationRepository;
 
     private final RefreshTokenRepository refreshTokenRepository;
@@ -56,7 +57,7 @@ public class SocialLoginService {
         Optional<User> findUser = userRepository.findByUsername(username);
         User userEntity = null;
 
-        if (!findUser.isPresent()) {
+        if (findUser.isEmpty()) {
             userEntity = User.builder()
                     .username(username)
                     .password(encodedPassword)
@@ -77,9 +78,9 @@ public class SocialLoginService {
         String refreshToken = JwtUtil.createRefreshToken(userEntity);
 
         Optional<RefreshToken> oldRefreshToken = refreshTokenRepository.findByUserId(userEntity.getId());
-        if (oldRefreshToken.isPresent()) { // 해당 사용자의 리프레쉬 토큰이 이미 있다면 삭제한다.
-            refreshTokenRepository.delete(oldRefreshToken.get());
-        }
+        // 해당 사용자의 리프레쉬 토큰이 이미 있다면 삭제한다.
+        oldRefreshToken.ifPresent(refreshTokenRepository::delete);
+
         RefreshToken newRefreshToken = RefreshToken.builder()
                 .id(refreshTokenId)
                 .refreshToken(refreshToken)

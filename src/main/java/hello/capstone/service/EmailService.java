@@ -35,16 +35,11 @@ public class EmailService {
     public String sendMailCodeAndSave(EmailRequestDto emailRequestDto) throws MessagingException {
 
         Optional<EmailTmp> findByUserEmail = emailTmpRepository.findByUserEmail(emailRequestDto.getEmail());
-
-        if (findByUserEmail.isPresent()) {
-            emailTmpRepository.delete(findByUserEmail.get());
-        }//이미 바로 전에 인증번호 전송했으면, 전에 꺼 tuple 삭제.
+        findByUserEmail.ifPresent(emailTmpRepository::delete);
 
         String authCode = emailSendingService.SendEmail(emailRequestDto.getEmail());//인증번호 전송과, emailTmp 저장을 transaction으로 묶음.
 
         //db에 사용자가 이미 먼저 보낸 인증 코드가 있으면, 그 레코드 삭제하고, 새로 생성.
-
-
         EmailTmp emailTmp = EmailTmp.builder()
                 .userEmail(emailRequestDto.getEmail())
                 .code(authCode)
@@ -54,22 +49,17 @@ public class EmailService {
         return authCode;
     }
 
-
     public void mailCodeAuthenticate(EmailCodeReqDto emailCodeReqDto) {
 
         Optional<EmailTmp> findUserEmail = emailTmpRepository.findByUserEmail(emailCodeReqDto.getEmail());
-
-        if (!findUserEmail.isPresent()) {
+        if (findUserEmail.isEmpty()) {
             throw new EmailCodeExpiredException("인증번호가 만료되었습니다.! 다시 전송해주세요.");
-        } else if (findUserEmail.isPresent()) {
-            log.info("code={}",findUserEmail.get().getCode());
-            if (!emailCodeReqDto.getCode().equals(findUserEmail.get().getCode())) {//인증번호 틀림
-                throw new EmailCodeMismatchException("이메일 코드 틀림. 다시 입력해주세요");
-            }
-
         }
-
-
+        String code = findUserEmail.get().getCode();
+        log.info("code={}", code);
+        if (!emailCodeReqDto.getCode().equals(code)) {
+            throw new EmailCodeMismatchException("이메일 코드 틀림. 다시 입력해주세요");
+        }
     }
 
 
