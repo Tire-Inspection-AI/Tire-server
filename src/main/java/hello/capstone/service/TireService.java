@@ -1,8 +1,8 @@
 package hello.capstone.service;
 
 
-import hello.capstone.domain.Tire;
-import hello.capstone.domain.User;
+import hello.capstone.domain.entity.Tire;
+import hello.capstone.domain.entity.User;
 import hello.capstone.dto.response.tire.response.TireResponseDto;
 import hello.capstone.exception.tire.TireNotFoundException;
 import hello.capstone.exception.user.UserNotFoundException;

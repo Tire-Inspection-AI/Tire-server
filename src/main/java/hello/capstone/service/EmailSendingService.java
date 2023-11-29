@@ -1,6 +1,6 @@
 package hello.capstone.service;
 
-import hello.capstone.domain.EmailTmp;
+import hello.capstone.domain.entity.EmailTmp;
 import hello.capstone.repository.EmailTmpRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ClassPathResource;

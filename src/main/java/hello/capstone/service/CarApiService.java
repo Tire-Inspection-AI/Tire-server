@@ -1,8 +1,8 @@
 package hello.capstone.service;
 
 
-import hello.capstone.car_api.CarInfo;
-import hello.capstone.car_api.CarInfoProvider;
+import hello.capstone.domain.car_api.CarInfo;
+import hello.capstone.domain.car_api.CarInfoProvider;
 import hello.capstone.dto.request.car.CarReqDto;
 import hello.capstone.exception.car.NotFoundException;
 import hello.capstone.exception.car.OwnerMismatchException;

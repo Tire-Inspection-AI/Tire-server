@@ -1,6 +1,6 @@
 package hello.capstone.service;
 
-import hello.capstone.domain.EmailTmp;
+import hello.capstone.domain.entity.EmailTmp;
 import hello.capstone.dto.request.email.EmailCodeReqDto;
 import hello.capstone.dto.request.email.EmailRequestDto;
 import hello.capstone.exception.email.EmailCodeExpiredException;

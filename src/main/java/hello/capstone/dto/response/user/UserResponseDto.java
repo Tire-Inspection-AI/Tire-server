@@ -1,6 +1,6 @@
 package hello.capstone.dto.response.user;
 
-import hello.capstone.domain.User;
+import hello.capstone.domain.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

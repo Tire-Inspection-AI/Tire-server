@@ -1,4 +1,4 @@
-package hello.capstone.car_api;
+package hello.capstone.domain.car_api;
 
 
 import hello.capstone.dto.request.car.CarReqDto;

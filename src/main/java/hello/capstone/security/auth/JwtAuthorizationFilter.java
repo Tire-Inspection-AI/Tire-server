@@ -1,7 +1,7 @@
 package hello.capstone.security.auth;
 
-import hello.capstone.domain.RefreshToken;
-import hello.capstone.domain.User;
+import hello.capstone.domain.entity.RefreshToken;
+import hello.capstone.domain.entity.User;
 import hello.capstone.exception.user.UserPrincipalNotFoundException;
 import hello.capstone.repository.RefreshTokenRepository;
 import hello.capstone.repository.UserRepository;

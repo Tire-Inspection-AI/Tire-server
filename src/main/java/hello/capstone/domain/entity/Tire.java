@@ -1,8 +1,8 @@
-package hello.capstone.domain;
+package hello.capstone.domain.entity;
 
 
-import hello.capstone.util.TirePositionEnum;
-import hello.capstone.util.TireStatusEnum;
+import hello.capstone.domain.TirePositionEnum;
+import hello.capstone.domain.TireStatusEnum;
 import lombok.*;
 import org.hibernate.annotations.Comment;
 

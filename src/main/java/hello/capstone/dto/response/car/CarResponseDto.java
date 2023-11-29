@@ -1,6 +1,6 @@
 package hello.capstone.dto.response.car;
 
-import hello.capstone.domain.Car;
+import hello.capstone.domain.entity.Car;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -4,7 +4,7 @@ package hello.capstone.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import hello.capstone.car_api.CarInfo;
+import hello.capstone.domain.car_api.CarInfo;
 import hello.capstone.domain.Message;
 import hello.capstone.dto.request.car.CarReqDto;
 import hello.capstone.service.CarApiService;
