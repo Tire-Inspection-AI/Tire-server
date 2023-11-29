@@ -2,12 +2,13 @@ package hello.capstone.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import hello.capstone.controller.system.Constant;
 import hello.capstone.domain.Message;
 import hello.capstone.dto.request.login.SocialLoginReqDto;
 import hello.capstone.dto.response.login.LoginResponseDto;
 import hello.capstone.dto.response.user.UserResponseDto;
 import hello.capstone.service.SocialLoginService;
+import hello.capstone.util.ObjectMapperUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static hello.capstone.domain.Message.makeMessage;
+
 @RestController
 @RequestMapping("/api/social-login")
 @RequiredArgsConstructor
@@ -30,9 +33,7 @@ public class SocialLoginController {
 
     @PostMapping("")
     public void socialLogin(HttpServletResponse response, @RequestBody SocialLoginReqDto req) throws IOException {
-
-        ObjectMapper om = new ObjectMapper();
-        om.registerModule(new JavaTimeModule());
+        ObjectMapper om = ObjectMapperUtil.createObjectMapper();
         om.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         response.setContentType(MediaType.APPLICATION_JSON.toString());
 
@@ -40,18 +41,13 @@ public class SocialLoginController {
         try {
             loginResponse = socialLoginService.socialLogin(req);
         } catch (Exception e) {
-            Message message = Message.builder()
-                    .status(HttpStatus.BAD_REQUEST)
-                    .message(e.getMessage())
-                    .build();
+            Message message = makeMessage(Message.builder()
+                    .data(null), HttpStatus.BAD_REQUEST, e.getMessage());
             om.writeValue(response.getOutputStream(), message);
             return;
         }
-        Message message = Message.builder()
-                .status(HttpStatus.OK)
-                .data(UserResponseDto.of(loginResponse.getUser()))
-                .message("소셜 로그인 성공. 엑세스 토큰을 발급힙니다.")
-                .build();
+        Message message = makeMessage(Message.builder()
+                .data(UserResponseDto.of(loginResponse.getUser())), HttpStatus.OK, Constant.SOCIAL_LOGIN_SUCCESS);
 
         String accessToken = loginResponse.getAccess_token();
 
@@ -66,6 +62,4 @@ public class SocialLoginController {
 
         om.writeValue(response.getOutputStream(), message);
     }
-
-
 }
