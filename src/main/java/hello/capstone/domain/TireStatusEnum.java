@@ -1,4 +1,4 @@
-package hello.capstone.util;
+package hello.capstone.domain;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;

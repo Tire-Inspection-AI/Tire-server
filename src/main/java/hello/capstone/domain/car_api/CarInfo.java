@@ -1,4 +1,4 @@
-package hello.capstone.car_api;
+package hello.capstone.domain.car_api;
 
 
 import lombok.Builder;
@@ -27,10 +27,10 @@ public class CarInfo {
     private String cc;//배기량
 
     private String fuelEconomy;//연비
+
     private String frontTire;//앞 타이어 정보
+
     private String rearTire;//뒤 타이어 정보
-
-
 
 
 }

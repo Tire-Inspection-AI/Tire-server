@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,8 +17,9 @@ import javax.servlet.http.HttpServletResponse;
 public class TireWearController {
 
     private final TireWearInspectService tireWearInspectService;
+
     @GetMapping("/{tireId}")
-    public void inspectTireWear(@PathVariable("tireId") Long tireId){
+    public void inspectTireWear(@PathVariable("tireId") Long tireId) {
         tireWearInspectService.inspectTireWear(tireId);
     }
 

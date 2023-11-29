@@ -1,7 +1,7 @@
 package hello.capstone.security.auth;
 
 
-import hello.capstone.domain.User;
+import hello.capstone.domain.entity.User;
 import lombok.Getter;
 import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;

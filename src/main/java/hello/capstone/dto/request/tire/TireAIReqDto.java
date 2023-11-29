@@ -1,7 +1,6 @@
 package hello.capstone.dto.request.tire;
 
-import hello.capstone.domain.Tire;
-import hello.capstone.dto.response.tire.response.TireResponseDto;
+import hello.capstone.domain.entity.Tire;
 import lombok.Builder;
 import lombok.Data;
 

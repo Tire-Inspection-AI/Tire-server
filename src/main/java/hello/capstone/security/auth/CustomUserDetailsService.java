@@ -1,7 +1,7 @@
 package hello.capstone.security.auth;
 
 
-import hello.capstone.domain.User;
+import hello.capstone.domain.entity.User;
 import hello.capstone.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

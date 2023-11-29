@@ -1,6 +1,6 @@
 package hello.capstone.repository;
 
-import hello.capstone.domain.Tire;
+import hello.capstone.domain.entity.Tire;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

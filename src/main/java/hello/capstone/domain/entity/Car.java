@@ -1,4 +1,4 @@
-package hello.capstone.domain;
+package hello.capstone.domain.entity;
 
 import lombok.*;
 import org.hibernate.annotations.Comment;

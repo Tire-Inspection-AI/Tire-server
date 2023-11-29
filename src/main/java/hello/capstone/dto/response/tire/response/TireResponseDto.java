@@ -1,8 +1,8 @@
 package hello.capstone.dto.response.tire.response;
 
-import hello.capstone.domain.Tire;
-import hello.capstone.util.TirePositionEnum;
-import hello.capstone.util.TireStatusEnum;
+import hello.capstone.domain.entity.Tire;
+import hello.capstone.domain.TirePositionEnum;
+import hello.capstone.domain.TireStatusEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

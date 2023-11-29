@@ -3,13 +3,15 @@ package hello.capstone.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import hello.capstone.car_api.CarInfo;
+import hello.capstone.domain.car_api.CarInfo;
 import hello.capstone.domain.Message;
+import hello.capstone.domain.entity.Car;
 import hello.capstone.dto.request.car.CarReqDto;
 import hello.capstone.dto.response.car.CarResponseDto;
 import hello.capstone.dto.response.car.CarResponseWithTireStatus;
 import hello.capstone.service.CarApiService;
 import hello.capstone.service.CarService;
+import hello.capstone.service.TireWearInspectService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -29,6 +31,8 @@ public class CarController {
 
     private final CarApiService carApiService;
 
+    private final TireWearInspectService tireWearInspectService;
+
     @PostMapping("")
     public void addCar(HttpServletResponse response, @RequestBody CarReqDto carReqDto) throws Exception {
 
@@ -39,7 +43,7 @@ public class CarController {
         response.setContentType(MediaType.APPLICATION_JSON.toString());
 
         CarInfo carInfo = carApiService.getCarInfo(carReqDto);
-        CarResponseDto.CarBrief result = carService.savedCar(carInfo,carReqDto);
+        CarResponseDto.CarBrief result = carService.savedCar(carInfo, carReqDto);
 
         Message message = Message.builder()
                 .data(result)
@@ -57,7 +61,7 @@ public class CarController {
         om.registerModule(new JavaTimeModule());
         response.setContentType(MediaType.APPLICATION_JSON.toString());
 
-        CarResponseDto result = carService.searchByCarId(carId);
+        CarResponseDto result = carService.searchSpecCarInfoByCarId(carId);
         Message message = Message.builder()
                 .data(result)
                 .status(HttpStatus.OK)
@@ -74,12 +78,12 @@ public class CarController {
         om.registerModule(new JavaTimeModule());
         response.setContentType(MediaType.APPLICATION_JSON.toString());
 
+        Car car = carService.searchByCarId(carId);
+        car.getTires()
+                .forEach(tire -> {
+                    tireWearInspectService.inspectTireWear(tire.getId());
+                });
 
-        /**
-         * 바퀴 4개에 대해서 학습을 돌리고, 그 결과를 반환해야 한다.
-         * 즉, 학습을 돌리는 과정이 들어갸아 하는 자리이다.
-         * 인공지능한테 사진을 줘야 함
-         */
         CarResponseWithTireStatus result = carService.searchByCarIdWithTires(carId);
         Message message = Message.builder()
                 .data(result)

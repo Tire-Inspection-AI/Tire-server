@@ -1,6 +1,7 @@
-package hello.capstone.domain;
+package hello.capstone.domain.entity;
 
 
+import hello.capstone.domain.entity.Car;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

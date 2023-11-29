@@ -1,8 +1,8 @@
 package hello.capstone.service;
 
 
-import hello.capstone.domain.RefreshToken;
-import hello.capstone.domain.User;
+import hello.capstone.domain.entity.RefreshToken;
+import hello.capstone.domain.entity.User;
 import hello.capstone.dto.request.user.UserReqDto;
 import hello.capstone.dto.response.user.UserResponseDto;
 import hello.capstone.exception.user.PasswordFormatException;

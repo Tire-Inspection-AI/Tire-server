@@ -1,7 +1,7 @@
 package hello.capstone.util;
 
 
-import hello.capstone.domain.User;
+import hello.capstone.domain.entity.User;
 import hello.capstone.security.auth.AuthProperties;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

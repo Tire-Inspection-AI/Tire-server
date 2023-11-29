@@ -1,10 +1,10 @@
 package hello.capstone.service;
 
 
-import hello.capstone.car_api.CarInfo;
-import hello.capstone.domain.Car;
-import hello.capstone.domain.Tire;
-import hello.capstone.domain.User;
+import hello.capstone.domain.car_api.CarInfo;
+import hello.capstone.domain.entity.Car;
+import hello.capstone.domain.entity.Tire;
+import hello.capstone.domain.entity.User;
 import hello.capstone.dto.request.car.CarReqDto;
 import hello.capstone.dto.response.car.CarResponseDto;
 import hello.capstone.dto.response.car.CarResponseWithTireStatus;
@@ -16,8 +16,8 @@ import hello.capstone.repository.CarRepository;
 import hello.capstone.repository.TireRepository;
 import hello.capstone.repository.UserRepository;
 import hello.capstone.util.SecurityContextHolderUtil;
-import hello.capstone.util.TirePositionEnum;
-import hello.capstone.util.TireStatusEnum;
+import hello.capstone.domain.TirePositionEnum;
+import hello.capstone.domain.TireStatusEnum;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -86,7 +86,7 @@ public class CarService {
 
     }
     @Transactional
-    public CarResponseDto searchByCarId(Long carId){//Car의 상세 정보 보여줌. Tire의 정보는 없다.
+    public CarResponseDto searchSpecCarInfoByCarId(Long carId){//Car의 상세 정보 보여줌. Tire의 정보는 없다.
 
         Long userId = SecurityContextHolderUtil.getUserId();
         User user = userRepository.findById(userId).orElseThrow(()->new UserNotFoundException("사용자를 찾을 수 없습니다."));
@@ -97,6 +97,14 @@ public class CarService {
                 .orElseThrow(()->new SearchFailedException("접근 권한이 없는 차량입니다."));
         return CarResponseDto.of(car);
 
+    }
+
+    @Transactional
+    public Car searchByCarId(Long carId){
+        Optional<Car> carOptional = carRepository.findByCarId(carId);
+
+        return carOptional.flatMap(car -> carOptional)
+                .orElseThrow(() -> new SearchFailedException("차량 검색에 실패하였습니다."));
     }
 
     @Transactional
