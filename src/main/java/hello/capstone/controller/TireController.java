@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 import static hello.capstone.domain.Message.makeMessage;
 
@@ -29,6 +30,40 @@ public class TireController {
     private final TireService tireService;
 
     private final TireWearInspectService tireWearInspectService;
+
+    /** 블루 투스로부터 (타이어 id, 타이어 사진)을 전송받아 db에 저장하고,
+     * AI에 넣어서 학습 돌리는 로직이 작성되어야 한다.
+     * 이 내용이 아래의 함수이다.
+     */
+
+    @PostMapping("/{tireId}/image")
+    public void saveTireImageAndInspect(@RequestParam("image") MultipartFile imageFile, @PathVariable Long tireId, HttpServletResponse response) throws IOException {
+        ObjectMapper om = ObjectMapperUtil.createObjectMapper();
+        response.setContentType(MediaType.APPLICATION_JSON.toString());
+
+        tireService.saveTireImage(tireId, imageFile);
+        //저장
+
+        TireResponseDto.TireBrief tireBrief = tireWearInspectService.inspectOneTireWear(tireId);
+        // 학습 후 결과 전송
+
+        Message message = makeMessage(Message.builder()
+                .data(tireBrief), HttpStatus.OK, Constant.SUCCESS);
+        om.writeValue(response.getOutputStream(), message);
+    }
+
+
+//    @PostMapping("/{tireId}/image") //원래 로직
+//    public void saveTireImage(@RequestParam("image") MultipartFile imageFile, @PathVariable Long tireId, HttpServletResponse response) throws IOException {
+//        ObjectMapper om = ObjectMapperUtil.createObjectMapper();
+//        response.setContentType(MediaType.APPLICATION_JSON.toString());
+//
+//        tireService.saveTireImage(tireId, imageFile);
+//        Message message = makeMessage(Message.builder()
+//                .data(null), HttpStatus.OK, Constant.SUCCESS);
+//
+//        om.writeValue(response.getOutputStream(), message);
+//    }
 
     @GetMapping("/upload-form")
     public ModelAndView sendImageAddForm() {
@@ -48,26 +83,28 @@ public class TireController {
         om.writeValue(response.getOutputStream(), message);
     }
 
-    @PostMapping("/{tireId}/image")
-    public void saveTireImage(@RequestParam("image") MultipartFile imageFile, @PathVariable Long tireId, HttpServletResponse response) throws IOException {
+    @GetMapping("/{tireId}/wear-inspections")
+    public void inspectOneTireWear(@PathVariable("tireId") Long tireId, HttpServletResponse response) throws IOException {
         ObjectMapper om = ObjectMapperUtil.createObjectMapper();
         response.setContentType(MediaType.APPLICATION_JSON.toString());
 
-        tireService.saveTireImage(tireId, imageFile);
+        TireResponseDto.TireBrief tireBrief = tireWearInspectService.inspectOneTireWear(tireId);
         Message message = makeMessage(Message.builder()
-                .data(null), HttpStatus.OK, Constant.SUCCESS);
-
+                .data(tireBrief), HttpStatus.OK, Constant.SUCCESS);
         om.writeValue(response.getOutputStream(), message);
     }
 
-    @GetMapping("/{tireId}/wear-inspections")
-    public void inspectTireWear(@PathVariable("tireId") Long tireId, HttpServletResponse response) throws IOException {
+    /**
+     *아래의 함수가 새롭게 만들어진 함수이다.
+     */
+    @GetMapping("/car/{carId}/wear-inspections")
+    public void inspectCarTiresWear(@PathVariable("carId") Long carId, HttpServletResponse response) throws IOException{
         ObjectMapper om = ObjectMapperUtil.createObjectMapper();
         response.setContentType(MediaType.APPLICATION_JSON.toString());
 
-        tireWearInspectService.inspectTireWear(tireId);
+        List<TireResponseDto.TireBrief> tireBriefs = tireWearInspectService.inspectCarTiresWear(carId);
         Message message = makeMessage(Message.builder()
-                .data(null), HttpStatus.OK, Constant.SUCCESS);
+                .data(tireBriefs), HttpStatus.OK, Constant.SUCCESS);
         om.writeValue(response.getOutputStream(), message);
     }
 }

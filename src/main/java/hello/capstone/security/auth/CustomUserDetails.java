@@ -17,7 +17,7 @@ import java.util.List;
 public class CustomUserDetails implements UserDetails {
 
 
-    private User user;
+    private final User user;
 
     public CustomUserDetails(User user) {  this.user = user; }
 
@@ -28,7 +28,7 @@ public class CustomUserDetails implements UserDetails {
         List<String> roleList= Arrays.asList(user.getRoles().split(","));
 
         roleList.forEach(role -> {
-            authorities.add(() -> role.strip());
+            authorities.add(role::strip);
         });
         return authorities;
     }

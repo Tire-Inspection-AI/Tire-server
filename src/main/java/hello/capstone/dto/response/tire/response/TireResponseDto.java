@@ -58,5 +58,11 @@ public class TireResponseDto {
                 .build();
     }
 
-
+    public static TireResponseDto.TireBrief of(Long tire_id, TireStatusEnum tireStatus, TirePositionEnum tirePosition) {
+        return TireBrief.builder()
+                .tire_id(tire_id)
+                .tireStatus(tireStatus)
+                .tirePosition(tirePosition)
+                .build();
+    }
 }

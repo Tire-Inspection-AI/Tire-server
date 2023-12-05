@@ -17,7 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -43,6 +45,7 @@ public class TireService {
 
         //이미지 데이터 설정
         tire.setImage(imageBytes);
+
     }
 
     @Transactional
@@ -58,5 +61,14 @@ public class TireService {
 
         Tire tire = optionalTire.orElseThrow(() -> new TireSearchFailedException("접근할 수 없는 타이어 정보 입니다."));
         return TireResponseDto.of(tire);
+    }
+
+    @Transactional
+    public List<TireResponseDto.TireBrief> searchByCarId(Long carId){
+        List<Tire> tires = tireRepository.findByCarId(carId);
+
+        return tires.stream()
+                .map(TireResponseDto::tireBrief)
+                .collect(Collectors.toList());
     }
 }

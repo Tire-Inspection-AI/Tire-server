@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 import static hello.capstone.domain.Message.makeMessage;
+import static hello.capstone.domain.Message.makeMessage2;
 
 
 @RestController
@@ -56,6 +57,7 @@ public class CarController {
         response.setContentType(MediaType.APPLICATION_JSON.toString());
 
         CarResponseDto result = carService.searchSpecCarInfoByCarId(carId);
+
         Message message = makeMessage(Message.builder()
                 .data(result), HttpStatus.OK, Constant.SUCCESS);
         om.writeValue(response.getOutputStream(), message);
@@ -69,7 +71,7 @@ public class CarController {
         Car car = carService.searchByCarId(carId);
         car.getTires()
                 .forEach(tire -> {
-                    tireWearInspectService.inspectTireWear(tire.getId());
+                    tireWearInspectService.inspectOneTireWear(tire.getId());
                 });
 
         CarResponseWithTireStatus result = carService.searchByCarIdWithTires(carId);
@@ -94,6 +96,13 @@ public class CarController {
         response.setContentType(MediaType.APPLICATION_JSON.toString());
 
         List<CarResponseDto.CarBrief> result = carService.searchByUserId();
+        log.info("result={}",result);
+        if(result.isEmpty()){
+            Message message = makeMessage2(Message.builder()
+                    .data(result), -1,HttpStatus.OK, Constant.SUCCESS);
+            om.writeValue(response.getOutputStream(), message);
+            return;
+        }
         Message message = makeMessage(Message.builder()
                 .data(result), HttpStatus.OK, Constant.SUCCESS);
         om.writeValue(response.getOutputStream(), message);

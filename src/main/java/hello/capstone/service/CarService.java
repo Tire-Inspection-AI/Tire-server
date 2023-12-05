@@ -8,6 +8,7 @@ import hello.capstone.domain.entity.User;
 import hello.capstone.dto.request.car.CarReqDto;
 import hello.capstone.dto.response.car.CarResponseDto;
 import hello.capstone.dto.response.car.CarResponseWithTireStatus;
+import hello.capstone.dto.response.tire.response.TireResponseDto;
 import hello.capstone.exception.car.CarDeleteFailException;
 import hello.capstone.exception.car.CarSavedFailException;
 import hello.capstone.exception.car.SearchFailedException;
@@ -57,7 +58,7 @@ public class CarService {
                     .seats(Integer.parseInt(carInfo.getSeats()))
                     .fuel(carInfo.getFuel())
                     .cc(Integer.parseInt(carInfo.getCc()))
-                    .fuelEconomy(Double.valueOf(carInfo.getFuelEconomy()))
+                    .fuelEconomy(Double.parseDouble(carInfo.getFuelEconomy()))
                     .frontTire(carInfo.getFrontTire())
                     .rearTire(carInfo.getRearTire())
                     .createdAt(LocalDateTime.now())
@@ -107,13 +108,18 @@ public class CarService {
 
         Long userId = SecurityContextHolderUtil.getUserId();
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
+        List<Tire> tires = tireRepository.findByCarId(carId);
+        List<TireResponseDto.TireBrief> tireBriefs = tires.stream()
+                .map(TireResponseDto::tireBrief)
+                .collect(Collectors.toList());
 
         Car car = user.getCars().stream()
                 .filter(c -> c.getId().equals(carId))
                 .findFirst()
                 .orElseThrow(() -> new SearchFailedException("접근 권한이 없는 차량입니다."));
         log.info("car.getTires={}", car.getTires());
-        return CarResponseWithTireStatus.of(car);
+
+        return CarResponseWithTireStatus.of(car,tireBriefs);
     }
 
     @Transactional

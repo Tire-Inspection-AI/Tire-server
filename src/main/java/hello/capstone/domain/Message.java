@@ -33,4 +33,12 @@ public class Message {
                 .build();
         return message;
     }
+    public static Message makeMessage2(Message.MessageBuilder result,int code, HttpStatus httpStatus,String printString) {
+        Message message = result
+                .status(httpStatus)
+                .code(-1)
+                .message(printString)
+                .build();
+        return message;
+    }
 }
