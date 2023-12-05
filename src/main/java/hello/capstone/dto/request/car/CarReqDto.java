@@ -11,6 +11,7 @@ import java.time.LocalDate;
 public class CarReqDto {
 
     String regiNumber;//차량 등록 번호
+
     String ownerName;
 
     LocalDate FrontLeftTireRecentChangeDate;//년 월 입력

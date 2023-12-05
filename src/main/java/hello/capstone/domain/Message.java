@@ -25,4 +25,20 @@ public class Message {
         this.code=code;
         this.status=status;
     }
+
+    public static Message makeMessage(Message.MessageBuilder result,HttpStatus httpStatus,String printString) {
+        Message message = result
+                .status(httpStatus)
+                .message(printString)
+                .build();
+        return message;
+    }
+    public static Message makeMessage2(Message.MessageBuilder result,int code, HttpStatus httpStatus,String printString) {
+        Message message = result
+                .status(httpStatus)
+                .code(-1)
+                .message(printString)
+                .build();
+        return message;
+    }
 }

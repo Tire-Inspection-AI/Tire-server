@@ -1,6 +1,7 @@
 package hello.capstone.exception;
 
 import hello.capstone.domain.Message;
+import hello.capstone.exception.ai.AICommunicationException;
 import hello.capstone.exception.car.CarDeleteFailException;
 import hello.capstone.exception.car.NotFoundException;
 import hello.capstone.exception.car.OwnerMismatchException;
@@ -9,6 +10,7 @@ import hello.capstone.exception.email.EmailCodeExpiredException;
 import hello.capstone.exception.email.EmailCodeMismatchException;
 import hello.capstone.exception.email.EmailCodeSendingFailureException;
 import hello.capstone.exception.tire.TireNotFoundException;
+import hello.capstone.exception.tire.TireSearchFailedException;
 import hello.capstone.exception.token.token.TokenExpiredException;
 import hello.capstone.exception.user.*;
 import org.springframework.http.HttpStatus;
@@ -18,8 +20,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class CustomExceptionHandler {
-
-
     @ExceptionHandler(UsernameExistException.class)
     public ResponseEntity<?> handleException(UsernameExistException e){
         Message message = new Message(e.getMessage(), -100, HttpStatus.BAD_REQUEST);
@@ -110,11 +110,18 @@ public class CustomExceptionHandler {
         return new ResponseEntity<>(message, message.getStatus());
     }
 
-    @ExceptionHandler(TireNotFoundException.class)
-    public ResponseEntity<?> handleException(TireNotFoundException e) {
-        Message message = new Message(e.getMessage(), -300, HttpStatus.BAD_REQUEST);
+    @ExceptionHandler(TireSearchFailedException.class)
+    public ResponseEntity<?> handleException(TireSearchFailedException e) {
+        Message message = new Message(e.getMessage(), -254, HttpStatus.INTERNAL_SERVER_ERROR);
         return new ResponseEntity<>(message, message.getStatus());
     }
+
+    @ExceptionHandler(AICommunicationException.class)
+    public ResponseEntity<?> handleException(AICommunicationException e) {
+        Message message = new Message(e.getMessage(), -401, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(message, message.getStatus());
+    }
+
 
 
 }

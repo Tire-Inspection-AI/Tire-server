@@ -49,4 +49,13 @@ public class Tire {
     @JoinColumn(name = "car_id", nullable = false)
     private Car car;
 
+    public static Tire createTire(Car car, TirePositionEnum position, LocalDate recentChangeDate) {
+        return Tire.builder()
+                .recentChangeDate(recentChangeDate)
+                .tirePosition(position)
+                .tireStatus(TireStatusEnum.Good_Condition)
+                .car(car)
+                .build();
+    }
+
 }

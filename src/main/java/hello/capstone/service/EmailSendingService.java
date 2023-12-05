@@ -25,12 +25,9 @@ public class EmailSendingService {
 
     private final EmailTmpRepository emailTmpRepository;
 
-
-
-    //렌덤 인증 코드 생성
     public String createCode(){
         Random random = new Random();
-        StringBuffer key = new StringBuffer();
+        StringBuilder key = new StringBuilder();
 
         for (int i = 0; i < 6; i++) {
             key.append(random.nextInt(9));
