@@ -42,10 +42,10 @@ public class TireController {
         response.setContentType(MediaType.APPLICATION_JSON.toString());
 
         tireService.saveTireImage(tireId, imageFile);
-        //저장
+        //타이어 사진 저장
 
         TireResponseDto.TireBrief tireBrief = tireWearInspectService.inspectOneTireWear(tireId);
-        // 학습 후 결과 전송
+        // AI 모듈로 전숭 후 결과 반환
 
         Message message = makeMessage(Message.builder()
                 .data(tireBrief), HttpStatus.OK, Constant.SUCCESS);
@@ -53,17 +53,17 @@ public class TireController {
     }
 
 
-//    @PostMapping("/{tireId}/image") //원래 로직
-//    public void saveTireImage(@RequestParam("image") MultipartFile imageFile, @PathVariable Long tireId, HttpServletResponse response) throws IOException {
-//        ObjectMapper om = ObjectMapperUtil.createObjectMapper();
-//        response.setContentType(MediaType.APPLICATION_JSON.toString());
-//
-//        tireService.saveTireImage(tireId, imageFile);
-//        Message message = makeMessage(Message.builder()
-//                .data(null), HttpStatus.OK, Constant.SUCCESS);
-//
-//        om.writeValue(response.getOutputStream(), message);
-//    }
+    @PostMapping("/{tireId}/image2") //원래 로직
+    public void saveTireImage(@RequestParam("image") MultipartFile imageFile, @PathVariable Long tireId, HttpServletResponse response) throws IOException {
+        ObjectMapper om = ObjectMapperUtil.createObjectMapper();
+        response.setContentType(MediaType.APPLICATION_JSON.toString());
+
+        tireService.saveTireImage(tireId, imageFile);
+        Message message = makeMessage(Message.builder()
+                .data(null), HttpStatus.OK, Constant.SUCCESS);
+
+        om.writeValue(response.getOutputStream(), message);
+    }
 
     @GetMapping("/upload-form")
     public ModelAndView sendImageAddForm() {

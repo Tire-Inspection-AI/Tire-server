@@ -25,6 +25,8 @@ public class OauthTokenProvider {
             return getKakaoToken(code, provider);
         }else if(providerName.equals("google")){
             return getGoogleToken(code,provider);
+        }else if(providerName.equals("github")){
+            return getGithubToken(code,provider);
         }
         else {
             throw new Exception("허용되지 않습니다.");
@@ -98,6 +100,37 @@ public class OauthTokenProvider {
                 .headers(header -> {
                     header.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
                     header.setAcceptCharset(Collections.singletonList(StandardCharsets.UTF_8));
+                })
+                .bodyValue(formData)
+                .retrieve()
+                .bodyToMono(OauthTokenResponseDto.class)
+                .block();
+
+
+    }
+
+    public static OauthTokenResponseDto getGithubToken(String code, ClientRegistration provider) {
+
+        MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
+        formData.add("grant_type", "authorization_code");
+        formData.add("client_id", provider.getClientId());
+        formData.add("client_secret", provider.getClientSecret());
+        formData.add("code", code);
+        formData.add("redirect_uri", provider.getRedirectUri());
+
+        log.info("client_id={}", provider.getClientId());
+        log.info("client_secret={}", provider.getClientSecret());
+        log.info("code={}",code);
+        log.info("redirect_uri={}", provider.getRedirectUri());
+
+        return WebClient.create()
+                .post()
+                .uri(provider.getProviderDetails().getTokenUri())
+                .headers(header -> {
+                    header.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+                    header.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+                    header.setAcceptCharset(Collections.singletonList(StandardCharsets.UTF_8));
+
                 })
                 .bodyValue(formData)
                 .retrieve()

@@ -70,7 +70,7 @@ public class TireWearInspectService {
             tire.setTireStatus(responseDto.getTireStatusEnum());
             tireRepository.save(tire);
 
-            return new TireResponseDto.TireBrief (responseDto.getTireId(), responseDto.getTireStatusEnum(), tire.getTirePosition());
+            return new TireResponseDto.TireBrief (responseDto.getTireId(), responseDto.getTireStatusEnum(), tire.getTirePosition(),tire.getRecentChangeDate());
         }
         throw new AICommunicationException("인공지능 서버와 통신에 실패하였습니다.");
     }

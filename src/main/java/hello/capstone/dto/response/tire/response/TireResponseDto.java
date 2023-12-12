@@ -48,6 +48,7 @@ public class TireResponseDto {
         private Long tire_id;
         private TireStatusEnum tireStatus;
         private TirePositionEnum tirePosition;
+        private LocalDate tireRecentChangeDate;//년 월 입력
     }
 
     public static TireResponseDto.TireBrief tireBrief(Tire tire) {
@@ -55,6 +56,7 @@ public class TireResponseDto {
                 .tire_id(tire.getId())
                 .tireStatus(tire.getTireStatus())
                 .tirePosition(tire.getTirePosition())
+                .tireRecentChangeDate(tire.getRecentChangeDate())
                 .build();
     }
 
