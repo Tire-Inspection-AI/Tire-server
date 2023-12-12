@@ -18,7 +18,7 @@ public class RestTemplateConfig {
     public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder) {
         return restTemplateBuilder
                 .requestFactory(() -> new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory()))
-                .setConnectTimeout(Duration.ofMillis(5000))
+                .setConnectTimeout(Duration.ofMillis(10000))
                 .setReadTimeout(Duration.ofMillis(60000))//읽기 타임아웃 시간 설정 1분으로 설정
                 .additionalMessageConverters(new StringHttpMessageConverter(StandardCharsets.UTF_8))
                 .build();
